@@ -16,7 +16,13 @@
 </head>
 
 <body>
-    {% block body %}{% endblock %}
+    {% block body %}
+    {% if app.user %}
+    <div class="mb-3">
+        <a href="{{ path('app_login') }}">connexion</a>
+    </div>
+    {% endif %}
+    {% endblock %}
 </body>
 
 </html>
