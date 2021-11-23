@@ -30,11 +30,6 @@ class Trick
     private $text;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
@@ -49,9 +44,8 @@ class Trick
      */
     private $picture;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="video")
-     * @ORM\JoinColumn(nullable=false)
+   /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
      */
     private $video;
 
@@ -92,18 +86,6 @@ class Trick
     public function setText(string $text): self
     {
         $this->text = $text;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -162,34 +144,30 @@ class Trick
         return $this;
     }
 
-    public function getVideo(): ?self
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideo(): Collection
     {
         return $this->video;
     }
 
-    public function setVideo(?self $video): self
-    {
-        $this->video = $video;
-
-        return $this;
-    }
-
-    public function addVideo(self $video): self
+    public function addVideo(Video $video): self
     {
         if (!$this->video->contains($video)) {
             $this->video[] = $video;
-            $video->setVideo($this);
+            $video->setTrick($this);
         }
 
         return $this;
     }
 
-    public function removeVideo(self $video): self
+    public function removeVideo(Video $video): self
     {
         if ($this->video->removeElement($video)) {
             // set the owning side to null (unless already changed)
-            if ($video->getVideo() === $this) {
-                $video->setVideo(null);
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
             }
         }
 
