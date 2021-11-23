@@ -15,14 +15,24 @@
     {% endblock %}
 </head>
 
-<body>
-{% include('home/nav.html.twig')%}
-    {% block body %}
-    {% if app.user %}
-    <div class="mb-3">
-        <a href="{{ path('app_login') }}">connexion</a>
-    </div>
-    {% endif %}
+  {% block body %}
+<body class="d-flex h-100 text-center text-white bg-secondary">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    {% include('home/nav.html.twig')%}
+
+  <main class="px-3">
+  <img src="{{ asset('public/images/snow.jpg') }}" alt="">
+    <h1>SNOWTRICKS</h1>
+    <p class="lead">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
+    <p class="lead">
+   
+    
+    </p>
+  </main> 
+  <div class="justify-content-end">
+  <a href="#"><img src="{{ asset('public/images/fleche.svg') }}"></a>
+
+  
     {% endblock %}
 </body>
 
