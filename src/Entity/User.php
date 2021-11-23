@@ -43,6 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $fullName;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="user")
+     */
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +145,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFullName(string $fullName): self
     {
         $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getComment(): ?Comment
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
