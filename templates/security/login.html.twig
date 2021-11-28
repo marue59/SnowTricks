@@ -14,24 +14,35 @@
             Vous etes connecté en tant que : {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
         </div>
         {% endif %}
-        <div class="mb-3">
-            <label for="InputEmail1" class="form-label">Email</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-            <div id="emailHelp" class="form-text">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</div>
-        </div>
-        <div class="mb-3">
-            <label for="inputPassword">Mot de passe</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-        </div>
+        <h1 class="text-center mt-3">Connexion</h1>
+        <div class="d-flex flex-column justify-content-center p-3">
+            <div class="form-control">
+                <div class="m-3">
+                    <label class="m-1" for="InputEmail1" class="form-label">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    <div id="emailHelp" class="form-text">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</div>
+                </div>
+                <div class="m-3">
+                    <label class="m-1" for="inputPassword">Mot de passe</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                </div>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me">Se souvenir de moi
-            </label>
+                <div class="checkbox m-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    </label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+                <div class="d-flex flex-column justify-content-center m-4"> 
+                    <a class="text-center" href="{{ path('app_register') }}">Inscription</a>
+                    <a class="text-center" href="{{ path('app_forgot_password_request') }}">Mot de passe perdu</a>
+                </div>
+            </div> 
         </div>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
 </div>
 {% endblock %}

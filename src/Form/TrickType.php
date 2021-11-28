@@ -14,9 +14,9 @@ class TrickType extends AbstractType
         $builder
             ->add('name')
             ->add('text')
-            ->add('created_at')
-            ->add('update_at')
             ->add('video')
+            ->add('picture')
+            ->add('category')
         ;
     }
 

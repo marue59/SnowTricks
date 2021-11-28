@@ -1,15 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<body class="d-flex flex-column h-100 text-center text-white bg-secondary">
-
-    <div class="d-flex flex-column align-content-center cover-container w-100 p-5 mx-auto ">
-        <img src="{{ asset('public/images/snow.jpg') }}" alt="">
+<body class="d-flex flex-column h-100 text-center text-white">
+<div class="bg_img">
+<div class="d-flex flex-column align-content-center cover-container w-100 p-5 mx-auto ">
+    
         <h1>SNOWTRICKS</h1>
         <p class="lead">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
     </div>
     <div class="d-flex justify-content-end ">
-        <a class="p-5" href="#"><img src="{{ asset('public/images/fleche.svg') }}"></a>
+        <a class="p-5" href="#"><img src="{{ asset('images/fleche.svg') }}"></a>
     </div>
+
+</div>
+   
 </body>
 {% endblock %}
