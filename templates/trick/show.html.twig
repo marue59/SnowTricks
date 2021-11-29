@@ -2,6 +2,9 @@
 
 {% block title %}Trick{% endblock %}
 
+{% block header %}
+{% endblock %}
+
 {% block body %}
     <h1>Trick</h1>
 
@@ -22,6 +25,14 @@
             <tr>
                 <th>Category</th>
                 <td>{{ trick.category }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ trick.picture }}</td>
+            </tr> 
+            <tr>
+                <th>Video</th>
+                <td>{{ trick.video }}</td>
             </tr>
             <tr>
                 <th>Created_at</th>

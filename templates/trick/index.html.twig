@@ -2,7 +2,12 @@
 
 {% block title %}Trick index{% endblock %}
 
+{% block header %}
+{% endblock %}
+
+
 {% block body %}
+
 <div class="container">
     <h1>Toutes les figures</h1>
 
@@ -28,6 +33,6 @@
         {% endfor %}
     </table>
 
-    <a href="{{ path('trick_new') }}">Create new</a>
+    <a href="{{ path('trick_new') }}">Créer une nouvelle figure</a>
     </div>
 {% endblock %}

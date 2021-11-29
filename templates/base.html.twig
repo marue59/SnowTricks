@@ -31,7 +31,7 @@
                         <a class="nav-link" href="/">Home<span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="/tricks">Tricks</a>
+                        <a class="nav-link " href="{{ path('trick_index') }}">Tricks</a>
                     </li>
 
                     <li class="nav-item">
@@ -46,6 +46,10 @@
             </div>
         </div>
     </nav>
+
+{% block header %}
+{% endblock %}
+
 {% block body %}
 {% endblock %}
 
