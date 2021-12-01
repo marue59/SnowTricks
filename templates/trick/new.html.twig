@@ -8,10 +8,34 @@
     <div class="d-flex flex-column justify-content-center p-3">
         <div class="form-control">                
             <div class="m-3 text-center">
-            {{ include('trick/_form.html.twig') }}
+            {{ form_start(form) }}  
+                {{ form_row(form.name)}}
+                <button type="button" class="btn btn-secondary btn-new" data-collection="#picture">Images</button>
+                <div id="picture"
+                    class="row"
+                    data-prototype="{{ include('trick/_picture.html.twig', {form: form.picture.vars.prototype})|e('html_attr') }}"
+                    data-index="{{ form.picture|length > 0 ? form.picture|last.vars.name +1 : 0 }}">
+                    {% for picture in form.picture %}
+                        {{ include('trick/_picture.html.twig', {form: trick})}} 
+                    {% endfor %}
+                </div> 
+
+                <button type="button" class="btn btn-secondary btn-new" data-collection="#video">Video</button>
+                <div id="video"
+                    class="row"
+                    data-prototype="{{ include('trick/_video.html.twig', {form: form.video.vars.prototype})|e('html_attr') }}"
+                    data-index="{{ form.video|length > 0 ? form.video|last.vars.name +1 : 0 }}">
+                    {% for video in form.video %}
+                        {{ include('trick/_video.html.twig', {form: video})}} 
+                    {% endfor %}
+                </div> 
+            {{ form_end(form) }}  
             </div>    
         </div>    
     </div>
     <a class="m-4 text-center" href="{{ path('trick_index') }}">Retour aux figures</a>
 </div>   
+{% endblock %}
+{% block javascripts %}
+<link href="{{ asset('js/new_tricks.js') }}"> 
 {% endblock %}

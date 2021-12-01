@@ -1,5 +1,7 @@
 .bg_img {
   background-image: url(/images/snowboard.jpg);
   background-repeat: no-repeat;
-  background-position: center;
+  background-size: cover;
+  position: relative;
+  opacity: 0.6;
 }

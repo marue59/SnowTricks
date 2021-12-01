@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/trick")
@@ -36,6 +37,19 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /*// Recupere les images
+            $picture = $form->get('picture')->getData();
+
+            foreach($pictures as $picture){
+                // On genere un nouveau nom de fichier
+                $fileName = md5(uniqid()). '.' . $picture->guessExtension();
+            
+                $img = new Picture();
+                $img->setName($fil);
+                    ->setPath();
+            }*/
+
             $entityManager->persist($trick);
             $entityManager->flush();
 
