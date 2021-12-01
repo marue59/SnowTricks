@@ -6,6 +6,66 @@
 {% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-6 col-md-6 p-3">
+            
+            <div class="card mb-2 ">      
+                <img src="{{ trick.picture }}" class="card-img-top img-post p-1" alt="...">
+                <img src="{{ trick.video }}" class="card-img-top img-post p-1" alt="...">
+
+                <div class="card-body">
+                    <h4 class="card-title text-center">{{ trick.name }}</h4> 
+                    <p class="card-text text-justify">{{ trick.text }}</p> 
+                    <p class="card-text text-center">{{ trick.category }}</p> 
+
+                    <p class="card-text text-end">{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</p>                        
+                    <p class="card-text text-center"><a href="/post/{{ post.id }}" class="btn btn-dark mb-2">Découvrir</a></p>
+                    {% if trick.updateAt is not empty %}
+                        <p class="card-text mt-1 text-end">modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
+                    {% endif %}
+                </div>
+        </div>
+    </div>
+    {% if session.id is not empty %}
+    <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
+        <form class="" method="post">
+            <div class="p-2">
+                {%if session.token is not empty%}       
+                    <input class="form-control" type="hidden" name="token" value={{session.token}}>
+                {%endif%}
+                <div class="form-group">
+                    <textarea class="form-control" name="text"></textarea>
+                </div>
+            </div>   
+            <div class="d-flex flex-column justify-content-center">
+                <button type="submit" class="btn btn-success">Envoyer</button>
+            </div>
+        </form>
+    {% else %}
+        <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
+    {% endif %}
+    {% for comment in comments %} 
+        <div class="row">
+            <div class="col-sm-12 p-3">     
+                <div class="card mb-2 ">      
+                    <div class="card-body"> 
+                        <p class="card-text text-justify">{{ comment.text }}</p> 
+                        <p class="card-text text-end">{{ comment.dateCreation | date("d/m/Y") }}</p>                        
+                        <p class="card-text text-end">Auteur : {{ comment.fullname }}</p> 
+                    </div>
+                </div>
+            </div>  
+        </div> 
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
+
+
     <h1>Trick</h1>
 
     <table class="table">
