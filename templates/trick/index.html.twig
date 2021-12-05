@@ -21,7 +21,7 @@
                         <p class="card-text text-center">{{ trick.category }}</p> 
 
                         <p class="card-text text-end">{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</p>                        
-                        <p class="card-text text-center"><a href="/post/{{ post.id }}" class="btn btn-dark mb-2">Découvrir</a></p>
+                        <p class="card-text text-center"><a href="{{ path('trick_show', {'id': trick.id}) }}" class="btn btn-dark mb-2">Découvrir</a></p>
                         {% if trick.updateAt is not empty %}
                             <p class="card-text mt-1 text-end">modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
                         {% endif %}

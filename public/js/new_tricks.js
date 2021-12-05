@@ -1,22 +1,39 @@
-//picture
-const addItem = (e) => {
-    // cibler CollectionHolder = collection de picture
-    // et recupérer les données de data-collection dans la vue
-    const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
+$(document).ready(function() {
+    // Get the ul that holds the collection of tags
+   var $collectionHolder = $('ul.pictures','ul.videos');
 
-    // récuperer le prototype
-    // remplacer le prototype par l'index
-    collectionHolder.innerHTML += collectionHolder
-    .dataset
-    .prototype
-    .replace(
-        /__name__/g, 
-        collectionHolder.dataset.index
-        );
+    $('.add-item').on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+        
+        // add a new tag form (see code block below)
+        addTagForm($collectionHolder, $(this));
+    });
+    
+    $(document).on('click', '.remove-tag', function(e) {
+        e.preventDefault();
+        
+        $(this).parent().remove();
+        
+        return false;
+    });
+    
+});
 
-    collectionHolder.dataset.index ++ ;
-
-  };
-document.querySelectorAll('.btn-new').forEach(btn=> btn.addEventListener('click', addItem));
-
-
+function addTagForm($collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = $newLinkLi.data('prototype');
+    
+    // get the new index
+    var index = $newLinkLi.data('index');
+    
+    // Replace '$$name$$' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+    
+    // increase the index with one for the next item
+    $newLinkLi.data('index', index + 1);
+    
+    // Display the form in the page in an li, before the "Add a tag" link li
+    $collectionHolder.append(newForm);
+}

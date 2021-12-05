@@ -2,6 +2,8 @@
   background-image: url(/images/snowboard.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   position: relative;
   opacity: 0.6;
+  height: auto;
 }

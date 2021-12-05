@@ -8,22 +8,22 @@
     <h1 class="text-center mt-3">Inscription</h1>
     <div class="d-flex flex-column justify-content-center p-3">
 
-      <div class="form-control">
-        <div class="form-group">  
-          {{ form_widget(registrationForm.fullname, { 'attr':{'class': 'form-control mt-3 mb-3', 'label': 'Votre nom'} }) }}  
+      <div class="form-control text-center">
+        <div class="form-group m-3">  
+          {{ form_row(registrationForm.fullname, { 'attr':{'class': 'form-control'} }) }}  
         </div> 
-        <div class="form-group">
-          {{ form_widget(registrationForm.email, { 'attr':{'class': 'form-control mt-3 mb-3', 'label': 'Votre email'} }) }} 
+        <div class="form-group m-3">
+          {{ form_row(registrationForm.email, { 'attr':{'class': 'form-control'} }) }} 
         </div> 
-        <div class="form-group">
-          {{ form_widget(registrationForm.plainPassword, { 'attr':{'class': 'form-control mt-3 mb-3', 'label': 'Votre mot de passe'} }) }} 
+        <div class="form-group m-3">
+          {{ form_row(registrationForm.plainPassword, { 'attr':{'class': 'form-control'} }) }} 
         </div>  
-        <div class="form-group">
+        <div class="form-group m-3">
           {{ form_row(registrationForm._token) }}  
         </div>  
         <div class="d-flex flex-column justify-content-center m-4"> 
           <button class="btn btn-dark">Créer un compte</button> 
-          <a class="text-center mt-2" href="{{ path('app_login') }}">Inscription</a>
+          <a class="text-center mt-2" href="{{ path('app_login') }}">Déja un compte</a>
         </div> 
       </div> 
     </div>

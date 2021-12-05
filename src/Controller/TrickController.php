@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,27 +30,34 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
+     * @param CategoryRepository $categoryRepo
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, 
+    EntityManagerInterface $entityManager, 
+    CategoryRepository $categoryRepo): Response
     {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick);
+        $form = $this->createForm(TrickType::class, $trick); 
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /*// Recupere les images
-            $picture = $form->get('picture')->getData();
-
-            foreach($pictures as $picture){
-                // On genere un nouveau nom de fichier
-                $fileName = md5(uniqid()). '.' . $picture->guessExtension();
+            if ($form->get('category')->getData() != null) {
+                $choicesCategories = $categoryRepo->allCategories(['name' => $form->get('category')->getData()]);
+                $trick->setCategory($choicesCategories);
+            }
             
-                $img = new Picture();
-                $img->setName($fil);
-                    ->setPath();
-            }*/
+            $pictureFiles = $form->get('picture')->getData();
 
+            try{
+                $pictureFiles->move(
+                    $this->getParameter('picture_upload')
+                );
+            } catch (FileExeption $e) {
+                echo 'Nous avons rencontrer un probleme';
+            }
+        
             $entityManager->persist($trick);
             $entityManager->flush();
 
