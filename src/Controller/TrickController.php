@@ -41,18 +41,35 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $form->get('category')->getData();
+            $trick = $form->getData();
+            $trick->setName();
+            $trick->setText();
+            $trick->setCreatedAt(new DateTime('now'));
+            $trick->setUpdateAt();
+            $trick->setComments();
+            $trick->setCategory();
 
-            $pictureFiles = $form->get('picture')->getData();
 
-            try{
-                $pictureFiles->move(
-                    $this->getParameter('picture_upload')
-                );
-            } catch (FileExeption $e) {
-                echo 'Nous avons rencontrer un probleme';
+            foreach ($trick->getPicture() as $picture ) {
+                $picture = $form->get('picture')->getData();
+
+                try{
+                    $picture->move(
+                        $this->getParameter(('kernel.project_dir').'/public/picture_upload')
+                    );
+                } catch (FileExeption $e) {
+                    
+                    $this->addFlash('danger', "Nous avons rencontrer un probleme");
+                }  
             }
-        
+
+            foreach ($trick->getVideo() as $video ) {
+                $video = $form->get('video')->getData();
+            }
+
+            $trick->setVideo($video);
+            $trick->setPicture($picture);
+
             $entityManager->persist($trick);
             $entityManager->flush();
 
