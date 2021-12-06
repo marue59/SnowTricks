@@ -22,7 +22,7 @@
                 {{ form_row(form.category, { 'attr':{'class': 'form-control mt-1'}}) }}
                 {{ form_row(form.text, { 'attr':{'class': 'form-control mt-1 mb-3'}}) }}
 
-                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.picture|length }}" data-prototype="{{ prototypePicture|e('html_attr') }}">Ajouter photo</button>
+                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.picture|length }}" data-type="pictures" data-prototype="{{ prototypePicture|e('html_attr') }}">Ajouter photo</button>
                 <ul class="pictures">
                     {% for picture in form.picture %}
                         <li class="picture{{ picture.vars.id }}">
@@ -35,7 +35,7 @@
                     {% endfor %}
                 </ul>
              
-                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.video|length }}" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
+                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.video|length }}"data-type="videos" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
                 <ul class="videos">
                     {% for video in form.video %}
                         <li class="video{{ video.vars.id }}">

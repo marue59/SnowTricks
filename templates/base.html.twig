@@ -44,14 +44,14 @@
     {% endblock %}
 
     {% block body %}   
-    <body class=" text-white">
+    <body class="text-dark">
         <div class="bg_img text-center">
-            <div class="d-flex flex-column align-content-center p-5 mx-auto ">
+            <div class="d-flex flex-column p-5">
                 <h1>SNOWTRICKS</h1>
                 <p class="lead">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
             </div>
-            <div class="d-flex justify-content-end ">
-                <div class="nav nav-tabs">
+            <div class="d-flex justify-content-end">
+                <div class="nav nav-tabs d-none d-lg-block d-md-block d-sm-none">
                     <a class="p-5" href="#trick" data-toggle="tab"><img src="{{ asset('images/fleche.svg') }}"></a>
                 </div>
             </div>
@@ -64,9 +64,9 @@
     {% endblock %}
 
     {% block footer %}
-        <div class="d-none d-sm-block">
-            <div class="fixed-bottom">
-                <div class="d-flex flex-row justify-content-around m-3" >
+        <div class="d-md-none d-xl-none d-sm-block">
+            <div class="fixed-bottom bg-dark">
+                <div class="d-flex flex-row justify-content-around m-2" >
                     <a href="{{ path('home') }}" target="_blank" title="home">
                         <img class="" src="{{ asset('images/footer/maison.svg') }}" alt="home" />
                     </a>
