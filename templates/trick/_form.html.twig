@@ -35,7 +35,7 @@
                     {% endfor %}
                 </ul>
              
-                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.video|length }}"data-type="videos" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
+                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.video|length }}"data-type="pictures" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
                 <ul class="videos">
                     {% for video in form.video %}
                         <li class="video{{ video.vars.id }}">

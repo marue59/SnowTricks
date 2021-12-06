@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Video;
 use App\Entity\Trick;
 use App\Entity\Picture;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
-use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,11 +30,9 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
-     * @param CategoryRepository $categoryRepo
      */
     public function new(Request $request, 
-    EntityManagerInterface $entityManager, 
-    CategoryRepository $categoryRepo): Response
+    EntityManagerInterface $entityManager): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick); 
@@ -43,11 +41,8 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($form->get('category')->getData() != null) {
-                $choicesCategories = $categoryRepo->allCategories(['name' => $form->get('category')->getData()]);
-                $trick->setCategory($choicesCategories);
-            }
-            
+            $form->get('category')->getData();
+
             $pictureFiles = $form->get('picture')->getData();
 
             try{

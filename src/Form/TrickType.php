@@ -4,10 +4,11 @@ namespace App\Form;
 
 use App\Entity\Trick;
 use App\Form\VideoType;
+use App\Entity\Category;
 use App\Form\PictureType;
-use App\Repository\CategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,29 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TrickType extends AbstractType
 {
-      /**
-     * @var CategoryRepository
-     */
-    private $repository;
-
-    /**
-     * @param CategoryRepository $repository
-     */
-    public function __construct(CategoryRepository $repository)
-    {
-        $this->repository = $repository;
-
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {  
-        $categories = $this->repository->allCategories();
-
-        $choicesCategories = [];
-        foreach ($categories as $category) {
-            $choicesCategories[$category->getName()]  = $category->getName();
-        }
-
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Le nom de la figure'
@@ -51,10 +32,10 @@ class TrickType extends AbstractType
                 ],
                 'label' => 'Description'
             ])
-            ->add('category', ChoiceType::class, [
-                'choices' =>  $choicesCategories,
-                'label' => 'Catégorie',
-                'required' => false,
+            ->add('category', EntityType::class, [
+                'choice_label' => 'name',
+                'class' =>  Category::class,
+                'label' => 'Indiquez la catégorie',
             ])
 
             ->add('picture', CollectionType::class, [
