@@ -45,44 +45,42 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trick = $form->getData();
-
-
+dump($trick);
             foreach ($trick->getPicture() as $picture ) {
 
                 /** @var UploadedFile $pictureFile */
-                $pictureFile = $form->get('picture')->getData();
-                
+                $pictureFile = $picture->getPath();
                 if ($pictureFile) {
                     $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = $slugger->slug($originalFilename);
                     $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
     
-                try{
+                    try{
                     $pictureFile->move(
                         $this->getParameter(('kernel.project_dir').'/public/picture_upload'),
                         $newFilename
                     );
-                } catch (FileExeption $e) {
+                    } catch (FileExeption $e) {
                     
                     $this->addFlash('danger', "Nous avons rencontrés un probleme");
-                }  
+                    }  
+                }
             }
-
             $trick->setPicture($newFilename);
 
             $entityManager->persist($trick);
             $entityManager->flush();
-
+            
             return $this->redirectToRoute('trick_index', [], Response::HTTP_SEE_OTHER);
+        
         }
-
         return $this->renderForm('trick/new.html.twig', [
             'trick' => $trick,
-            'form' => $form,
-        ]);
+            'form' => $form
+        ]);   
+    
     }
-}
 
     /**
      * @Route("/{id}", name="trick_show", methods={"GET"})

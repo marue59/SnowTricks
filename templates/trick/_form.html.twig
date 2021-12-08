@@ -26,7 +26,7 @@
                 <ul class="pictures">
                     {% for picture in form.picture %}
                         <li class="picture{{ picture.vars.id }}">
-                            <img src="{{ asset('images/picture_upload/' ~ picture.vars.path) }}" alt="">
+                            <img src="{{ asset('public/images/picture_upload' ~ picture.vars.path) }}" alt="">
                             Formulaire picture
                             {{ form_row(form.picture.vars.name, { 'attr':{'class': 'form-control'}}) }}
                             {{ form_row(form.picture.vars.path, { 'attr':{'class': 'form-control'}}) }}
