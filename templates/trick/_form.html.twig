@@ -1,11 +1,11 @@
 <div class="d-flex flex-column justify-content-center p-3">
     <div class="form-control">                
-        <div class="m-3 text-center">
+        <div class="text-center">
             {% set prototypePicture %}
                 <div class="picture__name__">
                     {{ form_row(form.picture.vars.prototype.name, { 'attr':{'class': 'form-control'}}) }}
                     {{ form_row(form.picture.vars.prototype.path, { 'attr':{'class': 'form-control'}}) }}
-                    <button type="button" class="remove-tag btn btn-secondary">Supprimer</button>
+                    <button type="button m-2" class="remove-tag btn btn-secondary mt-2">Supprimer</button>
                 </div>
             {% endset %}
             
@@ -13,42 +13,41 @@
                 <div class="video__name__">
                     {{ form_row(form.video.vars.prototype.name, { 'attr':{'class': 'form-control'}}) }}
                     {{ form_row(form.video.vars.prototype.url, { 'attr':{'class': 'form-control'}}) }}
-                    <button type="button" class="remove-tag btn btn-secondary">Supprimer</button>
+                    <button type="button" class="remove-tag btn btn-secondary mt-2">Supprimer</button>
                 </div>
             {% endset %}
+            {{ form_start(form, { 'attr':{'class': 'm-3'}}) }}  
+                {{ form_row(form.name, { 'attr':{'class': 'form-control m-1'}}) }}
+                {{ form_row(form.category, { 'attr':{'class': 'form-control m-1'}}) }}
+                {{ form_row(form.text, { 'attr':{'class': 'form-control mt-2 mb-3'}}) }}
 
-            {{ form_start(form ,{ 'attr':{'class': 'm-3'}}) }}  
-                {{ form_row(form.name, { 'attr':{'class': 'form-control mt-1'}}) }}
-                {{ form_row(form.category, { 'attr':{'class': 'form-control mt-1'}}) }}
-                {{ form_row(form.text, { 'attr':{'class': 'form-control mt-1 mb-3'}}) }}
+                <button type="button" class="add-item btn btn-secondary m-1" data-index="{{ form.picture|length }}" data-type="pictures" data-prototype="{{ prototypePicture|e('html_attr') }}">Ajouter photo</button>
+                <button type="button" class="add-item btn btn-secondary m-1" data-index="{{ form.video|length }}"data-type="pictures" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
 
-                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.picture|length }}" data-type="pictures" data-prototype="{{ prototypePicture|e('html_attr') }}">Ajouter photo</button>
                 <ul class="pictures">
                     {% for picture in form.picture %}
                         <li class="picture{{ picture.vars.id }}">
-                            <img src="{{ asset('public/images/picture_upload' ~ picture.vars.path) }}" alt="">
+                            <img src="{{ asset('public/images/picture_upload' ~ picture.vars.value.path) }}" alt="">
                             Formulaire picture
-                            {{ form_row(form.picture.vars.name, { 'attr':{'class': 'form-control'}}) }}
-                            {{ form_row(form.picture.vars.path, { 'attr':{'class': 'form-control'}}) }}
-                            <button type="button" class="remove-tag btn btn-secondary">Supprimer</button>
+                            {{ form_row(picture.name, { 'attr':{'class': 'form-control mt-1'}}) }}
+                            {{ form_row(picture.path, { 'attr':{'class': 'form-control mt-1'}}) }}
+                            <button type="button" class="remove-tag btn btn-secondary mt-2">Supprimer</button>
                         </li>
                     {% endfor %}
                 </ul>
              
-                <button type="button" class="add-item btn btn-secondary" data-index="{{ form.video|length }}"data-type="pictures" data-prototype="{{ prototypeVideo|e('html_attr') }}">Ajouter video</button>
                 <ul class="videos">
                     {% for video in form.video %}
                         <li class="video{{ video.vars.id }}">
                             Formulaire video
-                            {{ form_row(form.video.vars.name, { 'attr':{'class': 'form-control'}}) }}
-                            {{ form_row(form.video.vars.url, { 'attr':{'class': 'form-control'}}) }}
-                            <button type="button" class="remove-tag btn btn-secondary">Supprimer</button>
+                            {{ form_row(video.name, { 'attr':{'class': 'form-control mt-1'}}) }}
+                            {{ form_row(video.url, { 'attr':{'class': 'form-control mt-1'}}) }}
+                            <button type="button" class="remove-tag btn btn-secondary mt-2">Supprimer</button>
                         </li>
                     {% endfor %}
                 </ul>
                
                 <button class="btn btn-secondary" type="submit">Enregister</button>
-                {{ form_rest(form) }}
             {{ form_end(form) }}
         </div>    
     </div>    

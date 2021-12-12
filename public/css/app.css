@@ -1,9 +1,14 @@
+body {
+  margin: 0 auto;
+  font-family: "Ubuntu", sans-serif !important;
+}
+
 .bg_img {
   background-image: url(/images/snowboard.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 650px;
+  height: 700px;
   position: relative;
   opacity: 0.8;
 }

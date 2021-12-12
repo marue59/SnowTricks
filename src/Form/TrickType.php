@@ -24,7 +24,7 @@ class TrickType extends AbstractType
     {  
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Le nom de la figure'
+                'label' => 'Nom'
             ])
             ->add('text', TextareaType::class, [
                 'attr' => [
@@ -35,7 +35,7 @@ class TrickType extends AbstractType
             ->add('category', EntityType::class, [
                 'choice_label' => 'name',
                 'class' =>  Category::class,
-                'label' => 'Indiquez la catégorie',
+                'label' => 'Catégorie',
             ])
 
             ->add('picture', CollectionType::class, [

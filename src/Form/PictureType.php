@@ -17,16 +17,20 @@ class PictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder 
-        ->add('name', TextType::class)
-        ->add('path', FileType::class);
+        ->add('name', TextType::class, [
+            'label' => 'Nom'
+        ])
+        ->add('path', FileType::class, [
+            'label' => 'Fichier',
+            'mapped' => false
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Picture::class,
-            'width' => 400,
-            'height' => 400,
+            'required' => false
         ]);
     }
 }
