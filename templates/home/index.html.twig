@@ -1,3 +1,6 @@
+{% block stylesheets %}
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{% endblock %}
 <body class="text-dark">
     <div class="bg_img d-flex flex-column justify-content-center">
         <div class="d-flex flex-column text-center">
@@ -9,63 +12,54 @@
         </div>
     </div>
 
-    <div id="trick-section"  class="container-fluid bg-light py-5 text-center">
-        <h2 class="text-primary">Tous les tricks</h2>
-        <p class="font-weight-bold mb-0">Toutes les figures entrées par les utilisateurs</p>
-        {% for trick in tricks %}   
-            {% if tricks < 10 %}  
-               
-                <div class="d-flex flex-wrap">
-                {% for picture in trick.picture %}
-                    <div class="text-center">
-                        <img src="/images/picture_upload/{{ picture.path }}" width="150px" height="150px" class="m-1">
-                        {{ trick.name }}
-                    </div>
-                {% endfor %}
-                {% for video in trick.video %}
-                    <div class="ratio-1x1">
-                        <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class="m-1"></iframe>
-                        {{ trick.name }}
-                    </div>
-                {% endfor %}
+    <div id="trick-section" class="text-center">
+        <h2 class="text-primary m-1">Tous les tricks</h2>
+        <p class="font-weight-bold m-1">Toutes les figures entrées par les utilisateurs</p>
+            {% for trick in tricks %}   
+                <div class="{{ loop.index > 10 ? 'd-none' : null}}">
+                    <div class="d-flex flex-row justify-content-around">
+                        {% for picture in trick.picture %}
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <img src="/images/picture_upload/{{ picture.path }}" width="250px" height="150px" class="">
+                                </div>
+                                <div>
+                                    <a href="{{ path('trick_show', {'id': trick.id}) }}">{{ trick.name }}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for video in trick.video %}
+                            <div class="d-flex flex-column ratio-1x1">
+                                <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class=""></iframe>
+                                <div>
+                                    <a href="{{ path('trick_show', {'id': trick.id}) }}">{{ trick.name }}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>  
                 </div>
-
-                
-            {% elseif tricks > 2 %}  
-                <div class="d-flex flex-wrap">
-                    {% for picture in trick.picture %}
-                        <div class="text-center">
-                            <img src="/images/picture_upload/{{ picture.path }}" width="150px" height="150px" class="m-1">
-                            {{ trick.name }}
-                        </div>
-                    {% endfor %}
-                    {% for video in trick.video %}
-                        <div class="ratio-1x1">
-                            <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class="m-1"></iframe>
-                            {{ trick.name }}
-                        </div>
-                    {% endfor %}
-                </div>
-
-            {% endif %}   
-            
-        {% endfor %}
-        <button id="buttonload" onclick="toggle_visibility('trick-section');">
-            <i class="fa fa-spinner fa-spin"></i>Voir plus
-        </button> 
-</div>
-    
-   
-
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <button id="buttonload">
+                <i class="fa fa-spinner fa-spin"></i>Voir plus
+            </button> 
+        </div>
     {% block javascripts %}  
     {% endblock %}
     <script type="text/javascript">
-        function toggle_visibility('trick-section') {
-            var e = document.getElementById(buttonload);
-            if(e.style.display == 'block')
-                e.style.display = 'none';
-            else
-                e.style.display = 'block';
-        }
+    $(function () { 
+        $('.buttonload').on('click', function (e) 
+            { e.preventDefault(); 
+                let $cards = $('.d-none').slice(0, 10);
+                    if ($cards.length === 0) 
+                        { $('.buttonload').remove(); 
+                        } 
+                        $cards.each(function (x) 
+                        { $(this).removeClass('d-none') 
+                        }) 
+                    })
+                 })
+        
     </script>
 </body>
