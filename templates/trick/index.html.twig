@@ -18,7 +18,6 @@
                     {% for picture in trick.picture %}
                         <li class="picture">
                             <img src="/images/picture_upload/{{ picture.path }}" width="100px" height="100px">
-                           
                         </li>
                     {% endfor %}
 
@@ -52,4 +51,6 @@
        
     </div> 
 </div>
+{% endblock %}
+{% block javascripts %}  
 {% endblock %}

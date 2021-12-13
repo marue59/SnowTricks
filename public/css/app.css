@@ -12,3 +12,9 @@ body {
   position: relative;
   opacity: 0.8;
 }
+.arrow-down {
+  position: relative;
+  right: 20px;
+  top: 190px;
+  font-size: 3em;
+}

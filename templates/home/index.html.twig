@@ -4,46 +4,68 @@
             <h1>SNOWTRICKS</h1>
             <p class="lead m-3">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
         </div>
-        <div class="align-self-end mt-5 mr-4 d-none d-lg-block d-md-block d-sm-none">
-            <a class="nav-link active" href="#trick" data-toggle="tab"><img src="{{ asset('images/fleche.svg') }}"></a>
+        <div class="d-flex flex-column text-end d-none d-lg-block d-md-block d-sm-none">
+            <a href="#trick-section"><img class="arrow-down" src="{{ asset('images/fleche.svg') }}"></a>
         </div>
     </div>
 
-    <div class="tab-content">
-    {% for trick in tricks %}
-                  
-                    
-        <div class="d-flex flex-column">
-            {% for picture in trick.picture %}
-                <div class="text-center">
-                <img src="/images/picture_upload/{{ picture.path }}" width="100px" height="100px">
-
+    <div id="trick-section"  class="container-fluid bg-light py-5 text-center">
+        <h2 class="text-primary">Tous les tricks</h2>
+        <p class="font-weight-bold mb-0">Toutes les figures entrées par les utilisateurs</p>
+        {% for trick in tricks %}   
+            {% if tricks < 10 %}  
+               
+                <div class="d-flex flex-wrap">
+                {% for picture in trick.picture %}
+                    <div class="text-center">
+                        <img src="/images/picture_upload/{{ picture.path }}" width="150px" height="150px" class="m-1">
+                        {{ trick.name }}
+                    </div>
+                {% endfor %}
+                {% for video in trick.video %}
+                    <div class="ratio-1x1">
+                        <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class="m-1"></iframe>
+                        {{ trick.name }}
+                    </div>
+                {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
-        <div class="">  
-            {% for video in trick.video %}
-            <div class="ratio" style="--bs-aspect-ratio: 50%">
-                    <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
-                </div>
-            {% endfor %}
-        </div>
-    {% endfor %}
-    </div>
-</div> 
-    </div>
 
-    <button class="buttonload">
-    <i class="fa fa-spinner fa-spin"></i>Voir plus
-    </button>
+                
+            {% elseif tricks > 2 %}  
+                <div class="d-flex flex-wrap">
+                    {% for picture in trick.picture %}
+                        <div class="text-center">
+                            <img src="/images/picture_upload/{{ picture.path }}" width="150px" height="150px" class="m-1">
+                            {{ trick.name }}
+                        </div>
+                    {% endfor %}
+                    {% for video in trick.video %}
+                        <div class="ratio-1x1">
+                            <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class="m-1"></iframe>
+                            {{ trick.name }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endif %}   
+            
+        {% endfor %}
+        <button id="buttonload" onclick="toggle_visibility('trick-section');">
+            <i class="fa fa-spinner fa-spin"></i>Voir plus
+        </button> 
+</div>
+    
+   
 
     {% block javascripts %}  
-        <script src="/public/js/scroll.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </body>
     {% endblock %}
+    <script type="text/javascript">
+        function toggle_visibility('trick-section') {
+            var e = document.getElementById(buttonload);
+            if(e.style.display == 'block')
+                e.style.display = 'none';
+            else
+                e.style.display = 'block';
+        }
+    </script>
+</body>

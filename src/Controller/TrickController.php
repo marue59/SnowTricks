@@ -130,12 +130,10 @@ class TrickController extends AbstractController
     //methode pour prendre l'id de la video aprés le / et le stocker en bdd
     public function handleVideos($videos) 
     {
-        $video = 'https://youtu.be/kd5g18V95HU';
-
         foreach ($videos as $key => $video) {
             $model = $video->getData();
             $link = $video->get('url')->getData();
-            $newLink = \substr($link, \strpos($link, "/") + 1);
+            $newLink = \substr($link, \strrpos($link, "/") + 1);
             $model->setUrl($newLink);
          }
     }
