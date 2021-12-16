@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Trick{% endblock %}
+{% block title %}Nouvelle figure{% endblock %}
 
-{% block body %}
-    <h1>Create new Trick</h1>
-
-    {{ include('trick/_form.html.twig') }}
-
-    <a href="{{ path('trick_index') }}">back to list</a>
+{% block body %}     
+<div class="container">
+    <h1 class="text-center mt-3">Créer une nouvelle figure</h1>        
+        {% include 'trick/_form.html.twig' %}
+    <a class="m-4 text-start" href="{{ path('trick_index') }}">Retour aux figures</a>
+</div>   
+{% endblock %}
+{% block javascripts %}
+    <script type="application/javascript" src="{{ asset('js/new_tricks.js') }}"></script>
 {% endblock %}

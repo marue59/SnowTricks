@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TrickRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Video;
+use DateTimeImmutable;
+use App\Entity\Comment;
+use App\Entity\Picture;
+use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TrickRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -35,22 +40,22 @@ class Trick
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $update_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", cascade={"persist"})
      */
     private $picture;
 
    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist"})
      */
     private $video;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", cascade={"persist"})
      */
     private $comments;
 
@@ -59,11 +64,17 @@ class Trick
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->picture = new ArrayCollection();
         $this->video = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->created_at = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -217,6 +228,18 @@ class Trick
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
