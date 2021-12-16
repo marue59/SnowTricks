@@ -6,35 +6,56 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-lg-6 col-md-6 p-3">
-            <div class="card mb-2 ">    
-                {% for picture in trick.picture %}
-                <div class="card-img-top d-block" width="460" height="345">
-                <img src="/images/picture_upload/{{ picture.path }}" width="100px" height="100px">
-                </div>
-                {% endfor %}
-
-                {% for video in trick.video %}
-                <div class="ratio" style="--bs-aspect-ratio: 50%">
+<div class="container col-sm-12">
+    <div class="card bg-dark text-dark">
+        {% for picture in trick.picture | slice (1) %}
+        <img src="/images/picture_upload/{{ picture.path }}" class="card-img" alt="..." width="700px" height="500px">
+        {% endfor %}
+        <div class="card-img-overlay">
+            {% if app.user %}
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('trick_edit', {'id': trick.id}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                {{ include('trick/_delete_form.html.twig') }}
+            </div>
+            {% endif %}
+            <h4 class="card-title d-flex justify-content-center">{{ trick.name }}</h4> 
+        </div>
+    </div>
+    {% for picture in trick.picture%}
+    <div class="{{ loop.index > 1 ? 'd-none' : null}}">
+        <div class="d-flex flex-row mt-3">
+            {% for picture in trick.picture %} 
+                <img src="/images/picture_upload/{{ picture.path }}" class="card-img" alt="..." width="150px" height="150px">
+            {% endfor %}
+            {% for video in trick.video %}
+                <div class="ratio-1x1">
                     <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
                 </div>
-                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
 
-                <div class="card-body">
-                    <h4 class="card-title text-center">{{ trick.name }}</h4> 
-                    <p class="card-text text-justify">{{ trick.text }}</p> 
-                    <p class="card-text text-end">{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</p>                        
-                    {% if trick.updateAt is not empty %}
-                        <p class="card-text mt-1 text-end">modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
-                    {% endif %}
-                    <div class="d-flex justify-content-around">
-                        <a href="{{ path('trick_edit', {'id': trick.id}) }}"class="btn btn-dark mb-2">Modifier</a>
-                        {{ include('trick/_delete_form.html.twig') }}
-                    </div>
-                </div>
-            </div>
+    <div>
+        <button class="buttonloadMedia">
+            <i class="fa fa-spinner fa-spin"></i>Voir plus
+        </button> 
+    </div>
+
+    <div class="card-body text-center">
+        <p class="card-text text-justify">{{ trick.text }}</p>
+    </div>
+    <div class="d-flex flex-row justify-content-center">  
+        <p>Créer le : {{ trick.createdAt ? trick.createdAt|date('H:i d-m-Y') : '' }}</p>                        
+            {% if trick.updateAt is not empty %}
+                <p class="card-text mt-1 text-end">Modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
+            {% endif %}  
+            {% for category in trick.category %} 
+                <p>{{ trick.category }}</p>
+            {% endfor %}
+    </div>
+
+    
             <a href="{{ path('trick_index') }}" class="btn btn-dark mb-2">Retour a la liste</a>
         </div>
 
@@ -73,4 +94,20 @@
     </div>
 </div>
 #} 
+{% block javascripts %}  
+{% endblock %}
+    <script type="text/javascript">
+    $(function () { 
+        $('.buttonloadMedia').on('click', function (e) { 
+            e.preventDefault(); 
+            let $cards = $('.d-none').slice(0, 10);
+            if ($cards.length === 0) { 
+                $('.buttonloadMedia').remove(); 
+            } 
+            $cards.each(function (x) { 
+                $(this).removeClass('d-none') 
+            }) 
+        })
+    })
+    </script>
 {% endblock %}

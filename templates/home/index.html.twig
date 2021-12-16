@@ -1,6 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trick{% endblock %}
+
 {% block stylesheets %}
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 {% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
 <body class="text-dark">
     <div class="bg_img d-flex flex-column justify-content-center">
         <div class="d-flex flex-column text-center">
@@ -41,25 +50,25 @@
             {% endfor %}
         </div>
         <div class="text-center">
-            <button id="buttonload">
+            <button class="buttonload">
                 <i class="fa fa-spinner fa-spin"></i>Voir plus
             </button> 
-        </div>
-    {% block javascripts %}  
+        </div>   
     {% endblock %}
-    <script type="text/javascript">
-    $(function () { 
-        $('.buttonload').on('click', function (e) 
-            { e.preventDefault(); 
+    {% block javascripts %}  
+        <script type="text/javascript">
+        $(function () { 
+            $('.buttonload').on('click', function (e) { 
+                e.preventDefault(); 
                 let $cards = $('.d-none').slice(0, 10);
-                    if ($cards.length === 0) 
-                        { $('.buttonload').remove(); 
-                        } 
-                        $cards.each(function (x) 
-                        { $(this).removeClass('d-none') 
-                        }) 
-                    })
-                 })
-        
+                if ($cards.length === 0) { 
+                    $('.buttonload').remove(); 
+                } 
+                $cards.each(function (x) { 
+                    $(this).removeClass('d-none') 
+                }) 
+            })
+        })
     </script>
-</body>
+  </body>
+    {% endblock %}

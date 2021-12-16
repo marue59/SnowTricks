@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('trick_delete', {'id': trick.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir effacer cette figure ?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}"> 
-    <button class="btn btn-dark mb-2">Effacer</button>
+    <button class="btn"><img src="{{ asset('images/delete.svg') }}"></button>
 </form>
