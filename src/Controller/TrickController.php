@@ -99,6 +99,7 @@ class TrickController extends AbstractController
      */
     public function show(Trick $trick, TrickRepository $trickRepository): Response
     {
+        //dd($trick);
         return $this->render('trick/show.html.twig', [
             'tricks' => $trickRepository->findAll(),
             'trick' => $trick

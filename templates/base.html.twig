@@ -9,7 +9,9 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
+    <body>
 
+    {% block header %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">
@@ -39,11 +41,9 @@
             </div>
         </div>
     </nav>
-
-    {% block header %}
     {% endblock %}
 
-    {% block body %}   
+    {% block content %} 
     {% endblock %}
 
     {% block footer %}
