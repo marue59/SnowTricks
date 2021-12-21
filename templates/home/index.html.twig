@@ -2,10 +2,6 @@
 
 {% block title %}Trick{% endblock %}
 
-{% block stylesheets %}
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-{% endblock %}
-
 
 {% block content %}
     <div class="bg_img d-flex flex-column justify-content-center">
@@ -13,7 +9,7 @@
             <h1>SNOWTRICKS</h1>
             <p class="lead m-3">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
         </div>
-        <div class="d-flex flex-column text-end d-none d-lg-block d-md-block d-sm-none">
+        <div class="d-flex flex-column text-end">
             <a href="#trick-section"><img class="arrow-down" src="{{ asset('images/fleche.svg') }}"></a>
         </div>
     </div>
@@ -21,38 +17,32 @@
     <div id="trick-section" class="text-center">
         <h2 class="text-dark m-1">Tous les tricks</h2>
         <p class="font-weight-bold m-1">Toutes les figures entrées par les utilisateurs</p>
-            {% for trick in tricks %}   
-                <div class="{{ loop.index > 10 ? 'd-none' : null}}">
-                    <div class="d-flex flex-row justify-content-around m-1">
-                        {% for picture in trick.picture %}
-                            <div class="d-flex flex-column">
-                                <div>
-                                    <img src="/images/picture_upload/{{ picture.path }}" width="250px" height="150px" class="">
-                                </div>
-                                <div class="d-flex flex-row justify-content-around">
-                                        <a href="{{ path('trick_show', {'id': trick.id}) }}" class="mt-2">{{ trick.name }}</a>
-                                    {% if app.user %}
-                                        <a href="{{ path('trick_edit', {'id': trick.id}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
-                                        {{ include('trick/_delete_form.html.twig') }}
-                                    {% endif %}
-                                </div>
+            <div class="d-flex flex-wrap">
+                {% for trick in tricks %}   
+                    <div class="{{ loop.index > 10 ? 'd-none' : null}}" style="flex: 1 1 160px;">
+                        <div class="d-flex flex-column">
+                            <div class="card">
+                                {% if trick.picture is not empty %}
+                                <img src="/images/picture_upload/{{ trick.picture.first.path }}" width="250px" height="150px" class="">
+                                {% else %}
+                                <img src="https://via.placeholder.com/250x150">
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                        {% for video in trick.video %}
-                            <div class="d-flex flex-column ratio-1x1">
-                                <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class=""></iframe>
-                                    <div class="d-flex flex-row justify-content-around">
-                                        <a href="{{ path('trick_show', {'id': trick.id}) }}">{{ trick.name }}</a>
-                                            {% if app.user %}
-                                                <a href="{{ path('trick_edit', {'id': trick.id}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
-                                                {{ include('trick/_delete_form.html.twig') }}
-                                            {% endif %}
-                                    </div>
+                            <div class="d-flex flex-row justify-content-around">
+                                    <a href="{{ path('trick_show', {'slug': trick.slug}) }}" class="mt-2">{{ trick.name }}</a>
+                                {% if app.user %}
+                                    <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                                    {{ include('trick/_delete_form.html.twig') }}
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                    </div>  
-                </div>
-            {% endfor %}
+                            <div>
+                                {{ trick.category.name }}
+                            </div>
+                        </div>
+                    
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         <div class="text-center">
             <button class="buttonload">
@@ -60,37 +50,145 @@
             </button> 
         </div>
 
-        //probleme
-        {% for picture in trick.picture %}
-            {% if picture > (2) %}
+  
             <div class="text-end m-4">
                 <button id="haut" onclick="retourHaut()" title="Retour haut de page">
                     <img class="arrow-up" src="{{ asset('images/arrow-up.svg') }}">
                 </button>
             </div>
-            {% endif %}
-        {% endfor %}
+            
 {% endblock %}
 
 {% block javascripts %}  
     <script type="text/javascript">
-    $(function () { 
-        $('.buttonload').on('click', function (e) { 
-            e.preventDefault(); 
-            let $cards = $('.d-none').slice(0, 10);
-            if ($cards.length === 0) { 
-                $('.buttonload').remove(); 
-            } 
-            $cards.each(function (x) { 
-                $(this).removeClass('d-none') 
-            }) 
+        $(function () { 
+            $('.buttonload').on('click', function (e) { 
+                e.preventDefault(); 
+                let $cards = $('.d-none').slice(0, 10);
+                if ($cards.length === 0) { 
+                    $('.buttonload').remove(); 
+                } 
+                $cards.each(function (x) { 
+                    $(this).removeClass('d-none') 
+                }) 
+            })
         })
-    })
 
-    function retourHaut()
+        function retourHaut()
         {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+    </script>
+{% endblock %}
+
+<div class="container text-center">
+    {% if app.user %}
+    <div class="col-12">
+        <a href="{{ path('trick_new') }}" class="btn btn-dark mb-2">Créer une nouvelle figure</a>
+    </div>  
+    {% endif %}
+    <div class="d-flex flex-wrap justify-content-center">    
+        <div class="d-flex flex-column">
+            <div class="card text-white">
+                {% for picture in trick.picture %}
+                <img src="/images/picture_upload/{{ trick.picture.first.path }}" class="card-img" alt="..." width="700px" height="500px">
+                {% endfor %}
+            
+                    {% if app.user %}
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                        {{ include('trick/_delete_form.html.twig') }}
+                    </div>
+                    {% endif %}
+                    <h4 class="card-title d-flex justify-content-center">{{ trick.name }}</h4> 
+                
+                {% for picture in trick.picture %}
+                <div class=""> 
+                        <img src="/images/picture_upload/{{ picture.path }}" class="card-img" alt="..." width="150px" height="150px">
+                        </div>
+                        {% endfor %}
+                    {% for video in trick.video %}
+                        <div class="ratio-1x1">
+                            <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="d-none d-sm-block d-lg-none">
+            <button class="buttonloadMedia">
+                <i class="fa fa-spinner fa-spin"></i>Voir plus
+            </button> 
+    </div>
+    <div class="card-body text-center">
+        <p class="card-text text-justify">{{ trick.text }}</p>
+    </div>
+    <div class="d-flex flex-row justify-content-center">  
+        <p class="card-text mt-1 p-2">Créer le : {{ trick.createdAt ? trick.createdAt|date('H:i d-m-Y') : '' }}</p>                        
+            {% if trick.updateAt is not empty %}
+                <p class="card-text mt-1 text-end">Modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
+            {% endif %}   
+        <p class="card-text mt-1 p-2">
+            - {{ trick.category.name }}
+        </p>
+    </div>
+        <a href="{{ path('home') }}" class="btn btn-dark mb-2">Retour a la liste</a>
+</div>
+
+        {#
+        {% if session.id is not empty %}
+        <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
+            <form class="" method="post">
+                <div class="p-2">
+                    {%if session.token is not empty%}       
+                        <input class="form-control" type="hidden" name="token" value={{session.token}}>
+                    {%endif%}
+                    <div class="form-group">
+                        <textarea class="form-control" name="text"></textarea>
+                    </div>
+                </div>   
+                <div class="d-flex flex-column justify-content-center">
+                    <button type="submit" class="btn btn-success">Envoyer</button>
+                </div>
+            </form>
+        {% else %}
+            <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
+        {% endif %}
+        {% for comment in comments %} 
+            <div class="row">
+                <div class="col-sm-12 p-3">     
+                    <div class="card mb-2 ">      
+                        <div class="card-body"> 
+                            <p class="card-text text-justify">{{ comment.text }}</p> 
+                            <p class="card-text text-end">{{ comment.dateCreation | date("d/m/Y") }}</p>                        
+                            <p class="card-text text-end">Auteur : {{ comment.fullname }}</p> 
+                        </div>
+                    </div>
+                </div>  
+            </div> 
+        {% endfor %}
+    </div>
+</div>
+#} 
+
+{% endblock %}
+{% block javascripts %}  
+    <script type="text/javascript">
+        $(function () { 
+            $('.buttonloadMedia').on('click', function (e) { 
+                e.preventDefault(); 
+                let $cards = $('.d-none').slice(0, 10);
+                if ($cards.length === 0) { 
+                    $('.buttonloadMedia').remove(); 
+                } 
+                $cards.each(function (x) { 
+                    $(this).removeClass('d-none') 
+                }) 
+            })
+        })
+    
     </script>
 {% endblock %}

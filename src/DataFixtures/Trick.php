@@ -34,6 +34,7 @@ class Trick extends Fixture
            $user->setFullName($faker->firstName());
            $user->setPassword($this->encoder->hashPassword($user, 'password'));
            $user->setEmail("user$i@email.com");
+           $user->addRole('ROLE_ADMIN');
            $manager->persist($user);
         }
         $manager->flush();

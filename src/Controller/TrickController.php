@@ -24,17 +24,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class TrickController extends AbstractController
 {
     /**
-     * @Route("/", name="trick_index", methods={"GET"})
-     */
-    public function index(TrickRepository $trickRepository, TrickType $form): Response
-    {
-        return $this->render('trick/index.html.twig', [
-            'tricks' => $trickRepository->findAll(),
-            'form' => $form
-        ]);
-    }
-
-    /**
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
      */
     public function new(Request $request, 
@@ -83,7 +72,7 @@ class TrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
             
-            return $this->redirectToRoute('trick_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         
         }
        
@@ -95,19 +84,18 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trick_show", methods={"GET"})
+     * @Route("/{slug}", name="trick_show", methods={"GET"})
      */
-    public function show(Trick $trick, TrickRepository $trickRepository): Response
+    public function show(Trick $trick): Response
     {
-        //dd($trick);
+        
         return $this->render('trick/show.html.twig', [
-            'tricks' => $trickRepository->findAll(),
             'trick' => $trick
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="trick_edit", methods={"GET", "POST"})
+     * @Route("/{slug}/edit", name="trick_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
     {
@@ -120,7 +108,7 @@ class TrickController extends AbstractController
             $this->handleVideos($form->get('video'));
             $entityManager->flush();
 
-            return $this->redirectToRoute('trick_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('trick/edit.html.twig', [
@@ -150,6 +138,6 @@ class TrickController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('trick_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
     }
 }

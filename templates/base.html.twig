@@ -26,7 +26,7 @@
                         <a class="nav-link" href="/">Home<span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ path('trick_index') }}">Tricks</a>
+                        <a class="nav-link " href="{{ path('home') }}">Tricks</a>
                     </li>
                     {% if app.user %}
                     <li class="nav-item">
@@ -48,20 +48,21 @@
 
     {% block footer %}
         <div class="d-md-none d-xl-none d-sm-block">
-            <div class="fixed-bottom bg-dark">
+            <div class="fixed-bottom bg-secondary">
                 <div class="d-flex flex-row justify-content-around m-2" >
                     <a href="{{ path('home') }}" target="_blank" title="home">
                         <img class="" src="{{ asset('images/footer/maison.svg') }}" alt="home" />
                     </a>
-                    <a href="{{ path('trick_index') }}" target="_blank" title="tricks">
+                    <a href="{{ path('home') }}" target="_blank" title="tricks">
                         <img class="" src="{{ asset('images/footer/drapeau.svg') }}" alt="tricks" />
                     </a>
-                    <a href="{{ path('app_login') }}" target="_blank" title="login">
-                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="login" />
-                    </a> 
                     {% if app.user %} 
                     <a href="{{ path('app_logout') }}" target="_blank" title="logout">
                         <img class="" src="{{ asset('images/footer/logout.svg') }}" alt="logout" />
+                    </a>  
+                    {% else %}
+                    <a href="{{ path('app_login') }}" target="_blank" title="login">
+                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="login" />
                     </a> 
                     {% endif %}
                 </div>
