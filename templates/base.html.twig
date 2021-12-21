@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Snow Tricks{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.svg') }}" />
 
         {% block stylesheets %}
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -15,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/snow.jpg') }}" alt="" width="100" height="100" class="rounded-circle">
+                <img src="{{ asset('images/logoSnowTricks.png') }}" alt="" width="250" height="50">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
