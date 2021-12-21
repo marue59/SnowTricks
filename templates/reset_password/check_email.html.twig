@@ -2,7 +2,7 @@
 
 {% block title %}Ré-initialiser mot de passe{% endblock %}
 
-{% block body %}
+{% block content %}
 <p>
     Si un compte correspondant à votre e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
     Ce lien expirera dans{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
