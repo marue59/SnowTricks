@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class TrickController extends AbstractController
 {
     /**
+     * @IsGranted("ROLE_USER", message="Vous devez être connecté pour avoir accés")
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
      */
     public function new(Request $request, 
@@ -94,7 +95,8 @@ class TrickController extends AbstractController
         ]);
     }
 
-    /**
+    /**     
+     * @IsGranted("ROLE_USER")
      * @Route("/{slug}/edit", name="trick_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
@@ -129,6 +131,7 @@ class TrickController extends AbstractController
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/{id}", name="trick_delete", methods={"POST"})
      */
     public function delete(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
