@@ -93,22 +93,28 @@ class TrickController extends AbstractController
      * @Route("/{slug}", name="trick_show", methods={"GET", "POST"})
      * @param CommentRepository $commentRepository
      */
-    public function show(Trick $trick, CommentRepository $commentRepository, Request $request): Response
+    public function show(Trick $trick, 
+    CommentRepository $commentRepository, 
+    Request $request, 
+    EntityManagerInterface $entityManager): Response
     {   
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
+        $comment->setCreateAt(\DateTimeImmutable::createFromFormat('Y-m-d', "1970-01-01"));
+        $comment->setTrick($trick)->getId();
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $commentRepository->findAll(),
+            'comments' => $commentRepository->findBy(['trick'=>$trick->getId()]),
             'form' => $form->createView()
         ]);
     }

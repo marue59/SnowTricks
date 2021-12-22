@@ -14,13 +14,12 @@
             <img src="/images/picture_upload/{{ trick.picture.first.path }}">
             <div class="card-img-overlay">
                 {% if app.user %}
-                <div class="icon-trick d-flex flex-row justify-content-end">
+                <div class="d-flex flex-row justify-content-end">
                     <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
                     {{ include('trick/_delete_form.html.twig') }}
                 </div>
                 {% endif %}
-                <h4 class="card-title text-white">{{ trick.name }}</h4> 
-                
+                <h4 class="card-title text-white">{{ trick.name }}</h4>   
             </div>  
         </div>
         <div class="d-none d-sm-block d-md-none">
@@ -28,11 +27,11 @@
                 <i class="fa fa-spinner fa-spin"></i>Voir plus
             </button> 
         </div>
-        <div class="col-12 d-flex flex-wrap justify-content-between"> 
+        <div class="d-flex flex-row"> 
             {% for picture in trick.picture %}
-            {#<div class="{{ loop.index > 10 ? 'd-none' : null}}" style="flex: 1 1 160px;">
-              #}  <div class="mx-auto"> 
-                    <img src="/images/picture_upload/{{ picture.path }}" alt="..." width="200px" height="150px">
+            <div class="{{ loop.index > 10 ? 'd-none' : null}}" style="flex: 1 1 160px;">
+                <div class="mx-auto"> 
+                    <img src="/images/picture_upload/{{ picture.path }}" class="m-1" width="300px" height="150px">
                 </div>
             {% endfor %}
             {% for video in trick.video %}
@@ -40,7 +39,7 @@
                     <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
                 </div>
             {% endfor %}
-            {#</div>#}
+            </div>
         </div>
         <div class="card-body text-center">
             <p class="card-text text-justify">{{ trick.text }}</p>
@@ -54,39 +53,34 @@
                  Catégorie : {{ trick.category.name }}
             </p>
         </div>
-        
-    {%  if app.user %}
-    <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
-   {# {{ include('comment/_form.html.twig') }}#}
-    {% else %}
-        <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
-    {% endif %}
-
-
-    {% for comment in comments %} 
-    <div class="{{ loop.index > 5 ? 'd-none' : null}}">
-        <div class="row">
-            <div class="col-sm-12 p-3">     
-                <div class="card mb-2 ">      
-                    <div class="card-body"> 
+        <div class="bg-light">
+            {%  if app.user %}
+                <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
+                {{ include('comment/_form.html.twig') }}
+            {% else %}
+                <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
+            {% endif %}
+        </div>
+        {% for comment in comments %} 
+        <div class="m-1{{ loop.index > 2 ? 'd-none' : null}}">
+            <div class="row g-0">
+                <div class="col-2">
+                    <img src="..." class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="card col-10 mb-2" style="max-width: 840px;">
+                    <div class="card-body">
                         <p class="card-text text-justify">{{ comment.text }}</p> 
-                        <p class="card-text text-end">{{ comment.createAt| date("d/m/Y") }}</p>                        
-                        <p class="card-text text-end">Auteur : </p>
-                        {% if app.user == comment.user %}
-                            <p class="card-text text-center"><a href="/post/{{ comment.id }}/all-comment/delete" class="btn btn-dark">Supprimer</a></p>
-                        {% endif %}
+                        <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y") }}</small></p>
                     </div>
                 </div>
-            </div>  
+            </div>
+        </div> 
+        {% endfor %}
+        <div class="text-center">
+            <button class="buttonloadComment btn btn-secondary m-3">
+                <i class="fa fa-spinner fa-spin"></i>Voir plus
+            </button> 
         </div>
-    </div> 
-    {% endfor %}
-    <div class="text-center">
-        <button class="buttonloadComment m-3">
-            <i class="fa fa-spinner fa-spin"></i>Voir plus
-        </button> 
-    </div>
-        <a href="{{ path('home') }}" class="btn btn-dark mb-5">Retour a la liste</a>
     </div>
 </div> 
 {% endblock %}
@@ -95,7 +89,7 @@
         $(function () { 
             $('.buttonloadComment').on('click', function (e) { 
                 e.preventDefault(); 
-                let $cards = $('.d-none').slice(0, 10);
+                let $cards = $('.d-none').slice(0, 2);
                 if ($cards.length === 0) { 
                     $('.buttonloadComment').remove(); 
                 } 
