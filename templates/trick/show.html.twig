@@ -11,7 +11,11 @@
     {% endif %}
     <div class="col-12 text-center">
         <div class="card">
+            {% if trick.picture is not empty%}
             <img src="/images/picture_upload/{{ trick.picture.first.path }}">
+            {% else %}
+            <img src="https://via.placeholder.com/250x150">
+            {% endif %}
             <div class="card-img-overlay">
                 {% if app.user %}
                 <div class="d-flex flex-row justify-content-end">
@@ -56,16 +60,20 @@
         <div class="bg-light">
             {%  if app.user %}
                 <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
-                {{ include('comment/_form.html.twig') }}
+                {{ render(path('comment_new', {id : trick.id})) }}
             {% else %}
-                <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
+                <p class="card-text text-center m-3">Pour laisser un commentaire vous devez vous connecter</p> 
             {% endif %}
         </div>
-        {% for comment in comments %} 
+        {% if trick.comments is not empty%}
+        {% for comment in trick.comments %} 
         <div class="m-1{{ loop.index > 2 ? 'd-none' : null}}">
             <div class="row g-0">
                 <div class="col-2">
-                    <img src="..." class="img-fluid rounded-start" alt="...">
+                    <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
+                    <div>
+                    {{comment.user.fullName}}
+                    </div>
                 </div>
                 <div class="card col-10 mb-2" style="max-width: 840px;">
                     <div class="card-body">
@@ -76,6 +84,7 @@
             </div>
         </div> 
         {% endfor %}
+        {% endif %}
         <div class="text-center">
             <button class="buttonloadComment btn btn-secondary m-3">
                 <i class="fa fa-spinner fa-spin"></i>Voir plus

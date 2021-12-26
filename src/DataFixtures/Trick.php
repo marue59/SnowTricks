@@ -2,12 +2,13 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use App\Entity\Category;
-use App\Entity\User;
-use App\Entity\Trick as T;
 use Faker\Factory;
+use App\Entity\User;
+use App\Entity\Comment;
+use App\Entity\Category;
+use App\Entity\Trick as T;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class Trick extends Fixture
@@ -34,7 +35,11 @@ class Trick extends Fixture
            $user->setFullName($faker->firstName());
            $user->setPassword($this->encoder->hashPassword($user, 'password'));
            $user->setEmail("user$i@email.com");
-           $user->addRole('ROLE_ADMIN');
+
+           if($i == 0){
+               $user->addRole('ROLE_ADMIN');
+           }
+           
            $manager->persist($user);
         }
         $manager->flush();
@@ -61,5 +66,20 @@ class Trick extends Fixture
             $manager->persist($trick);
         }
         $manager->flush();
+
+        $users = $manager->getRepository(User::class)->findAll();
+        $trick = $manager->getRepository(T::class)->findAll();
+
+        for($i = 0; $i < 500; $i++) {
+
+            $comment = new Comment();
+            $comment->setText($faker->text());
+            $comment->setUser($faker->randomElement($users));
+            $comment->setTrick($faker->randomElement($trick));
+            
+            $manager->persist($comment);
+        }
+        $manager->flush();
+
     }
 }

@@ -44,33 +44,8 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->handleVideos($form->get('video'));
-
-             // $picture = PictureType
-            foreach ($form->get('picture') as $picture ) {
-                // $model = Picture
-                $model = $picture->getData();
-                // $picturFile = UploadFile // upload fait automatiquement grace au FileType
-                $pictureFile = $picture->get('path')->getData();
-    
-                if ($pictureFile) {
-                    $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
-    
-                    try{
-                        $pictureFile->move(
-                            $this->getParameter('kernel.project_dir') . '/public/images/picture_upload/',
-                            $newFilename
-                        );
-                        $model->setPath($newFilename);
-    
-                    } catch (FileExeption $e) {
-                
-                        $this->addFlash('danger', "Nous avons rencontrés un probleme");
-                    }  
-                }
-            }
+            $this->handlePictures($form->get('picture'), $slugger);
+            
             //ajouter slug.
             $trick->setSlug($slugger->slug($trick->getName()));
 
@@ -94,28 +69,14 @@ class TrickController extends AbstractController
      * @param CommentRepository $commentRepository
      */
     public function show(Trick $trick, 
-    CommentRepository $commentRepository, 
+    CommentRepository $commentRepository,
     Request $request, 
     EntityManagerInterface $entityManager): Response
     {   
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        $comment->setCreateAt(\DateTimeImmutable::createFromFormat('Y-m-d', "1970-01-01"));
-        $comment->setTrick($trick)->getId();
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-        }
-
+       
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $commentRepository->findBy(['trick'=>$trick->getId()]),
-            'form' => $form->createView()
+            'comments' => $commentRepository->findBy(['trick'=>$trick->getId()],['create_at'=>'DESC']),
         ]);
     }
 
@@ -151,6 +112,37 @@ class TrickController extends AbstractController
             $newLink = \substr($link, \strrpos($link, "/") + 1);
             $model->setUrl($newLink);
          }
+    }
+
+    public function handlePictures($pictures, $slugger)
+    {
+         // $picture = PictureType
+         foreach ($pictures as $picture ) {
+            // $model = Picture
+            $model = $picture->getData();
+            // $picturFile = UploadFile // upload fait automatiquement grace au FileType
+            $pictureFile = $picture->get('path')->getData();
+
+            if ($pictureFile) {
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
+
+                try{
+                    $pictureFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images/picture_upload/',
+                        $newFilename
+                    );
+                    $model->setPath($newFilename);
+
+                } catch (FileExeption $e) {
+            
+                    $this->addFlash('danger', "Nous avons rencontrés un probleme");
+                }  
+            }
+        }
+
     }
 
 
