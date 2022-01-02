@@ -11,9 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+// contrainte d'unicité
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity("name")
  */
 class Trick
 {
@@ -25,7 +29,7 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -45,17 +49,18 @@ class Trick
     private $update_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", cascade={"persist","remove"})
      */
     private $picture;
 
    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist","remove"})
      */
     private $video;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", cascade={"persist","remove"})
+     * @ORM\OrderBy({"create_at" = "DESC"})
      */
     private $comments;
 

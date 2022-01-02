@@ -1,3 +1,32 @@
-{% block content %}
-    {{ include('trick/show.html.twig', {'button_label': 'Update'}) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer figure{% endblock %}
+
+{% block content %}     
+<div class="container">
+    <h1 class="text-center mt-3">Modifier une figure</h1> 
+        <div class="card">
+            {% if trick.picture is not empty%}
+            <img src="/images/picture_upload/{{ trick.picture.first.path }}">
+            {% else %}
+            <img src="https://via.placeholder.com/250x150">
+            {% endif %}
+            <div class="card-img-overlay">
+                {% if app.user %}
+                <div class="d-flex flex-row justify-content-end">
+                    <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                    {{ include('trick/_delete_form.html.twig') }}
+                </div>
+                {% endif %}
+                <h4 class="card-title text-white">{{ trick.name }}</h4>   
+            </div>  
+        </div>
+       
+        <div class="container">
+            {{ include('trick/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+</div>   
+{% endblock %}
+{% block javascripts %}
+    <script type="application/javascript" src="{{ asset('js/new_tricks.js') }}"></script>
 {% endblock %}

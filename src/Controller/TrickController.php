@@ -76,7 +76,6 @@ class TrickController extends AbstractController
        
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $commentRepository->findBy(['trick'=>$trick->getId()],['create_at'=>'DESC']),
         ]);
     }
 
@@ -84,13 +83,18 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @Route("/{slug}/edit", name="trick_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, 
+    Trick $trick,
+     EntityManagerInterface $entityManager,
+     SluggerInterface $slugger): Response
     {
         
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->handlePictures($form->get('picture'), $slugger);
             //utilisation de la methode video
             $this->handleVideos($form->get('video'));
             $entityManager->flush();
@@ -148,7 +152,7 @@ class TrickController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="trick_delete", methods={"POST"})
+     * @Route("/{id}/delete", name="trick_delete", methods={"POST"})
      */
     public function delete(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
     {

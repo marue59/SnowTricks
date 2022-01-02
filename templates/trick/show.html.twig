@@ -26,25 +26,24 @@
                 <h4 class="card-title text-white">{{ trick.name }}</h4>   
             </div>  
         </div>
-        <div class="d-none d-sm-block d-md-none">
-            <button class="buttonloadMedia">
-                <i class="fa fa-spinner fa-spin"></i>Voir plus
-            </button> 
-        </div>
-        <div class="d-flex flex-row"> 
-            {% for picture in trick.picture %}
-            <div class="{{ loop.index > 10 ? 'd-none' : null}}" style="flex: 1 1 160px;">
-                <div class="mx-auto"> 
-                    <img src="/images/picture_upload/{{ picture.path }}" class="m-1" width="300px" height="150px">
-                </div>
+        <div class="d-flex flex-wrap justify-content-around mt-2">
+        {% for picture in trick.picture %}
+            <div class="medias {{ loop.index > 0 ? 'd-none' : null}}" style="flex: 1 1 160px;"> 
+                <img src="/images/picture_upload/{{ picture.path }}" class="m-1" width="300px" height="150px">
+            </div>
             {% endfor %}
-            {% for video in trick.video %}
-                <div class="ratio-1x1 mx-auto">
+            {% for video in trick.video %}            
+                <div class="ratio-1x1">
                     <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
                 </div>
             {% endfor %}
-            </div>
         </div>
+        <div class="mt-1">
+                <button data-class="medias" class="buttonload">
+                    <i class="btn-secondary"></i>Voir plus
+                </button> 
+            </div>
+
         <div class="card-body text-center">
             <p class="card-text text-justify">{{ trick.text }}</p>
         </div>
@@ -58,49 +57,53 @@
             </p>
         </div>
         <div class="bg-light">
-            {%  if app.user %}
-                <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
+            {% if app.user %}
+                <h3 class="text-justify m-2">Laissez nous votre avis : </h3>                        
                 {{ render(path('comment_new', {id : trick.id})) }}
             {% else %}
                 <p class="card-text text-center m-3">Pour laisser un commentaire vous devez vous connecter</p> 
             {% endif %}
         </div>
+        
+    </div>
+    <div>
         {% if trick.comments is not empty%}
-        {% for comment in trick.comments %} 
-        <div class="m-1{{ loop.index > 2 ? 'd-none' : null}}">
-            <div class="row g-0">
-                <div class="col-2">
-                    <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
-                    <div>
-                    {{comment.user.fullName}}
+            {% for comment in trick.comments %} 
+            <div class="comments m-1 {{ loop.index > 5 ? 'd-none' : null}}">
+                <div class="row g-0">
+                    <div class="col-2">
+                        <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
+                        <div class="d-none d-sm-none d-lg-block">
+                        {{comment.user.fullName}}
+                        </div>
+                    </div>
+                    <div class="card col-10 mb-2" style="max-width: 840px;">
+                        <div class="card-body">
+                            <p class="card-text text-justify">{{ comment.text }}</p> 
+                            <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y H:i:s") }}</small></p>
+                        </div>
                     </div>
                 </div>
-                <div class="card col-10 mb-2" style="max-width: 840px;">
-                    <div class="card-body">
-                        <p class="card-text text-justify">{{ comment.text }}</p> 
-                        <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y") }}</small></p>
-                    </div>
-                </div>
+            </div> 
+            {% endfor %}
+            <div class="text-center">
+                <button data-class="comments" class="buttonload p-1 mb-5">
+                    <i class="fa fa-spinner fa-spin"></i>Voir plus
+                </button> 
             </div>
-        </div> 
-        {% endfor %}
         {% endif %}
-        <div class="text-center">
-            <button class="buttonloadComment btn btn-secondary m-3">
-                <i class="fa fa-spinner fa-spin"></i>Voir plus
-            </button> 
-        </div>
     </div>
 </div> 
 {% endblock %}
 {% block javascripts %}  
     <script type="text/javascript">
         $(function () { 
-            $('.buttonloadComment').on('click', function (e) { 
-                e.preventDefault(); 
-                let $cards = $('.d-none').slice(0, 2);
+            $('.buttonload').on('click', function (e) { 
+                e.preventDefault();
+                let dataclass = $(this).attr('data-class');
+                let $cards = $( '.' + dataclass + '.d-none').slice(0, 5);
                 if ($cards.length === 0) { 
-                    $('.buttonloadComment').remove(); 
+                    $(this).remove(); 
                 } 
                 $cards.each(function (x) { 
                     $(this).removeClass('d-none') 

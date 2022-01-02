@@ -59,11 +59,11 @@
                     </a>
                     {% if app.user %} 
                     <a href="{{ path('app_logout') }}" target="_blank" title="logout">
-                        <img class="" src="{{ asset('images/footer/logout.svg') }}" alt="logout" />
+                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="logout" />
                     </a>  
                     {% else %}
                     <a href="{{ path('app_login') }}" target="_blank" title="login">
-                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="login" />
+                        <img class="" src="{{ asset('images/footer/logout.svg') }}" alt="login" />
                     </a> 
                     {% endif %}
                 </div>
