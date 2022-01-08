@@ -2,61 +2,63 @@
 
 {% block title %}Trick{% endblock %}
 
-{% block stylesheets %}
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-{% endblock %}
 
-{% block header %}
-{% endblock %}
-
-{% block body %}
-<body class="text-dark">
+{% block content %}
     <div class="bg_img d-flex flex-column justify-content-center">
         <div class="d-flex flex-column text-center">
             <h1>SNOWTRICKS</h1>
             <p class="lead m-3">Site collaboratif pour faire connaître le SnowBoard auprès du grand public et aider à l'apprentissage des figures</p>
         </div>
-        <div class="d-flex flex-column text-end d-none d-lg-block d-md-block d-sm-none">
+        <div class="d-flex flex-column text-end">
             <a href="#trick-section"><img class="arrow-down" src="{{ asset('images/fleche.svg') }}"></a>
         </div>
     </div>
 
-    <div id="trick-section" class="text-center">
-        <h2 class="text-primary m-1">Tous les tricks</h2>
+    <div id="trick-section" class="container-fluid text-center">
+        <h2 class="text-dark m-1">Tous les tricks</h2>
         <p class="font-weight-bold m-1">Toutes les figures entrées par les utilisateurs</p>
-            {% for trick in tricks %}   
-                <div class="{{ loop.index > 10 ? 'd-none' : null}}">
-                    <div class="d-flex flex-row justify-content-around">
-                        {% for picture in trick.picture %}
-                            <div class="d-flex flex-column">
-                                <div>
-                                    <img src="/images/picture_upload/{{ picture.path }}" width="250px" height="150px" class="">
-                                </div>
-                                <div>
-                                    <a href="{{ path('trick_show', {'id': trick.id}) }}">{{ trick.name }}</a>
-                                </div>
+            <div class="d-flex flex-wrap justify-content-between">
+                {% for trick in tricks %}   
+                    <div class="{{ loop.index > 10 ? 'd-none' : null}}" style="flex: 1 1 160px;">
+                        <div class="d-flex flex-column">
+                            <div class="card mx-auto">
+                                {% if trick.picture is not empty %}
+                                <img src="/images/picture_upload/{{ trick.picture.first.path }}" width="250px" height="150px" class="">
+                                {% else %}
+                                <img src="https://via.placeholder.com/250x150">
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                        {% for video in trick.video %}
-                            <div class="d-flex flex-column ratio-1x1">
-                                <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video" class=""></iframe>
-                                <div>
-                                    <a href="{{ path('trick_show', {'id': trick.id}) }}">{{ trick.name }}</a>
-                                </div>
+                            <div class="d-flex flex-row justify-content-center">
+                                    <a href="{{ path('trick_show', {'slug': trick.slug}) }}" class="m-2">{{ trick.name }}</a>
+                                {% if app.user %}
+                                    <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                                    {{ include('trick/_delete_form.html.twig') }}
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                    </div>  
-                </div>
-            {% endfor %}
+                            <div>
+                                {{ trick.category.name }}
+                            </div>
+                        </div>
+                    
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         <div class="text-center">
-            <button class="buttonload">
+            <button class="buttonload mt-3">
                 <i class="fa fa-spinner fa-spin"></i>Voir plus
             </button> 
-        </div>   
-    {% endblock %}
-    {% block javascripts %}  
-        <script type="text/javascript">
+        </div>
+        <div class="text-end p-4 mb-3">
+            <button id="haut" onclick="retourHaut()" title="Retour haut de page">
+                <img class="arrow-up" src="{{ asset('images/arrow-up.svg') }}">
+            </button>
+        </div>
+            
+{% endblock %}
+
+{% block javascripts %}  
+    <script type="text/javascript">
         $(function () { 
             $('.buttonload').on('click', function (e) { 
                 e.preventDefault(); 
@@ -69,6 +71,11 @@
                 }) 
             })
         })
+
+        function retourHaut()
+        {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
     </script>
-  </body>
-    {% endblock %}
+{% endblock %}

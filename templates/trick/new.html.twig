@@ -2,11 +2,11 @@
 
 {% block title %}Nouvelle figure{% endblock %}
 
-{% block body %}     
+{% block content %}     
 <div class="container">
     <h1 class="text-center mt-3">Créer une nouvelle figure</h1>        
         {% include 'trick/_form.html.twig' %}
-    <a class="m-4 text-start" href="{{ path('trick_index') }}">Retour aux figures</a>
+    <a class="m-4 text-start" href="{{ path('home') }}">Retour aux figures</a>
 </div>   
 {% endblock %}
 {% block javascripts %}

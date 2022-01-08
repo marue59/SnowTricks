@@ -30,7 +30,7 @@ class Comment
     private $text;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="comment")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments", cascade={"persist"})
      */
     private $user;
 
@@ -41,7 +41,8 @@ class Comment
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
+        $this->create_at = new \DateTimeImmutable();
+
     }
 
     public function getId(): ?int
@@ -73,35 +74,7 @@ class Comment
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setComment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getComment() === $this) {
-                $user->setComment(null);
-            }
-        }
-
-        return $this;
-    }
+    
 
     public function getTrick(): ?Trick
     {
@@ -111,6 +84,26 @@ class Comment
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

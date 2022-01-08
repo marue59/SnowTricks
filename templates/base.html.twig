@@ -4,16 +4,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Snow Tricks{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.svg') }}" />
 
         {% block stylesheets %}
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
+    <body>
 
+    {% block header %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/snow.jpg') }}" alt="" width="100" height="100" class="rounded-circle">
+                <img src="{{ asset('images/logoSnowTricks.png') }}" alt="" width="250" height="50">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,7 +27,7 @@
                         <a class="nav-link" href="/">Home<span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ path('trick_index') }}">Tricks</a>
+                        <a class="nav-link " href="{{ path('home') }}">Tricks</a>
                     </li>
                     {% if app.user %}
                     <li class="nav-item">
@@ -39,29 +42,28 @@
             </div>
         </div>
     </nav>
-
-    {% block header %}
     {% endblock %}
 
-    {% block body %}   
+    {% block content %} 
     {% endblock %}
 
     {% block footer %}
         <div class="d-md-none d-xl-none d-sm-block">
-            <div class="fixed-bottom bg-dark">
+            <div class="fixed-bottom bg-light">
                 <div class="d-flex flex-row justify-content-around m-2" >
                     <a href="{{ path('home') }}" target="_blank" title="home">
                         <img class="" src="{{ asset('images/footer/maison.svg') }}" alt="home" />
                     </a>
-                    <a href="{{ path('trick_index') }}" target="_blank" title="tricks">
+                    <a href="{{ path('home') }}" target="_blank" title="tricks">
                         <img class="" src="{{ asset('images/footer/drapeau.svg') }}" alt="tricks" />
                     </a>
-                    <a href="{{ path('app_login') }}" target="_blank" title="login">
-                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="login" />
-                    </a> 
                     {% if app.user %} 
                     <a href="{{ path('app_logout') }}" target="_blank" title="logout">
-                        <img class="" src="{{ asset('images/footer/logout.svg') }}" alt="logout" />
+                        <img class="" src="{{ asset('images/footer/fleche_back.svg') }}" alt="logout" />
+                    </a>  
+                    {% else %}
+                    <a href="{{ path('app_login') }}" target="_blank" title="login">
+                        <img class="" src="{{ asset('images/footer/logout.svg') }}" alt="login" />
                     </a> 
                     {% endif %}
                 </div>
