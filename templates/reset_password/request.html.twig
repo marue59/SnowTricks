@@ -2,18 +2,18 @@
 
 {% block title %}Mot de passe oublié{% endblock %}
 
-{% block body %}
-<div class="container">
+{% block content %}
+<div class="container mb-5">
     {% for flashError in app.flashes('reset_password_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1 class="text-center mt-3">Mot de passe perdu</h1>
+    <h1 class="text-center mt-3">Mot de passe oublié</h1>
         <div class="form-control text-center">
-            <div class="m-3">
+            <div class="m-2">
             {{ form_start(requestForm) }}
                 {{ form_row(requestForm.email, { 'attr':{'class': 'form-control m-3', 'label': 'Votre mot de passe'} }) }} 
             </div>  
-            <a href="{{ path('app_forgot_password_request') }}" class="btn btn-primary m-2">Changer de mot de passe</a>
+            <a href="{{ path('app_forgot_password_request') }}" class="btn btn-dark m-3">Envoi email</a>
             {{ form_end(requestForm) }}   
         </div>       
 </div>  

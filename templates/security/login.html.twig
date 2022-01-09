@@ -2,7 +2,7 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="container col-lg-6 col-md-12 col-sm-12">
     <form method="post">
         {% if error %}
@@ -35,7 +35,7 @@
                     </label>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                    <button type="submit" class="btn btn-dark">Se connecter</button>
                 </div>
                 <div class="d-flex flex-column justify-content-center m-4"> 
                     <a class="text-center" href="{{ path('app_register') }}">Inscription</a>

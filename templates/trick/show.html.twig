@@ -2,112 +2,113 @@
 
 {% block title %}Trick{% endblock %}
 
-{% block header %}
-{% endblock %}
-
-{% block body %}
-<div class="container col-sm-12">
-    <div class="card bg-dark text-dark">
-        {% for picture in trick.picture | slice (1) %}
-        <img src="/images/picture_upload/{{ picture.path }}" class="card-img" alt="..." width="700px" height="500px">
-        {% endfor %}
-        <div class="card-img-overlay">
-            {% if app.user %}
-            <div class="d-flex justify-content-end">
-                <a href="{{ path('trick_edit', {'id': trick.id}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
-                {{ include('trick/_delete_form.html.twig') }}
-            </div>
+{% block content %}
+<div class="container text-center">
+    {% if app.user %}
+    <div class="col-12">
+        <a href="{{ path('trick_new') }}" class="btn btn-dark mb-2">Créer une nouvelle figure</a>
+    </div>  
+    {% endif %}
+    <div class="col-12 text-center">
+        <div class="card">
+            {% if trick.picture is not empty%}
+            <img src="/images/picture_upload/{{ trick.picture.first.path }}">
+            {% else %}
+            <img src="https://via.placeholder.com/250x150">
             {% endif %}
-            <h4 class="card-title d-flex justify-content-center">{{ trick.name }}</h4> 
+            <div class="card-img-overlay">
+                {% if app.user %}
+                <div class="d-flex flex-row justify-content-end">
+                    <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img class="mt-2" src="{{ asset('images/edit.svg') }}"></a>
+                    {{ include('trick/_delete_form.html.twig') }}
+                </div>
+                {% endif %}
+                <h4 class="card-title text-white">{{ trick.name }}</h4>   
+            </div>  
         </div>
-    </div>
-    {% for picture in trick.picture%}
-    <div class="{{ loop.index > 1 ? 'd-none' : null}}">
-        <div class="d-flex flex-row mt-3">
-            {% for picture in trick.picture %} 
-                <img src="/images/picture_upload/{{ picture.path }}" class="card-img" alt="..." width="150px" height="150px">
+        <div class="d-flex flex-wrap justify-content-around mt-2">
+        {% for picture in trick.picture %}
+            <div class="medias {{ loop.index > 0 ? 'd-none' : null}}" style="flex: 1 1 160px;"> 
+                <img src="/images/picture_upload/{{ picture.path }}" class="m-1" width="300px" height="150px">
+            </div>
             {% endfor %}
-            {% for video in trick.video %}
+            {% for video in trick.video %}            
                 <div class="ratio-1x1">
                     <iframe src="https://youtube.com/embed/{{ video.url }}" title="YouTube video"></iframe>
                 </div>
             {% endfor %}
         </div>
-    </div>
-    {% endfor %}
+        <div class="mt-1">
+                <button data-class="medias" class="buttonload">
+                    <i class="btn-secondary"></i>Voir plus
+                </button> 
+            </div>
 
-    <div>
-        <button class="buttonloadMedia">
-            <i class="fa fa-spinner fa-spin"></i>Voir plus
-        </button> 
-    </div>
-
-    <div class="card-body text-center">
-        <p class="card-text text-justify">{{ trick.text }}</p>
-    </div>
-    <div class="d-flex flex-row justify-content-center">  
-        <p>Créer le : {{ trick.createdAt ? trick.createdAt|date('H:i d-m-Y') : '' }}</p>                        
-            {% if trick.updateAt is not empty %}
-                <p class="card-text mt-1 text-end">Modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
-            {% endif %}  
-            {% for category in trick.category %} 
-                <p>{{ trick.category }}</p>
-            {% endfor %}
-    </div>
-
-    
-            <a href="{{ path('trick_index') }}" class="btn btn-dark mb-2">Retour a la liste</a>
+        <div class="card-body text-center">
+            <p class="card-text text-justify">{{ trick.text }}</p>
         </div>
-
-        {#
-        {% if session.id is not empty %}
-        <h3 class="text-justify m-4">Laissez nous votre avis : </h3>                        
-            <form class="" method="post">
-                <div class="p-2">
-                    {%if session.token is not empty%}       
-                        <input class="form-control" type="hidden" name="token" value={{session.token}}>
-                    {%endif%}
-                    <div class="form-group">
-                        <textarea class="form-control" name="text"></textarea>
-                    </div>
-                </div>   
-                <div class="d-flex flex-column justify-content-center">
-                    <button type="submit" class="btn btn-success">Envoyer</button>
-                </div>
-            </form>
-        {% else %}
-            <p class="card-text text-center">Pour laisser un commentaire vous devez vous connecter</p> 
-        {% endif %}
-        {% for comment in comments %} 
-            <div class="row">
-                <div class="col-sm-12 p-3">     
-                    <div class="card mb-2 ">      
-                        <div class="card-body"> 
-                            <p class="card-text text-justify">{{ comment.text }}</p> 
-                            <p class="card-text text-end">{{ comment.dateCreation | date("d/m/Y") }}</p>                        
-                            <p class="card-text text-end">Auteur : {{ comment.fullname }}</p> 
+        <div class="d-flex flex-wrap justify-content-center">  
+            <p class="card-text mt-1 p-2">Créer le : {{ trick.createdAt ? trick.createdAt|date('d-m-Y H:i') : '' }}</p>                        
+                {% if trick.updateAt is not empty %}
+                    <p class="card-text mt-1 text-end">Modifié le : {{ trick.updateAt ? trick.updateAt|date('Y-m-d H:i:s') : '' }}</p> 
+                {% endif %}   
+            <p class="card-text mt-1 p-2">
+                 Catégorie : {{ trick.category.name }}
+            </p>
+        </div>
+        <div class="bg-light">
+            {% if app.user %}
+                <h3 class="text-justify m-2">Laissez nous votre avis : </h3>                        
+                {{ render(path('comment_new', {id : trick.id})) }}
+            {% else %}
+                <p class="card-text text-center m-3">Pour laisser un commentaire vous devez vous connecter</p> 
+            {% endif %}
+        </div>
+        
+    </div>
+    <div>
+        {% if trick.comments is not empty%}
+            {% for comment in trick.comments %} 
+            <div class="comments m-1 {{ loop.index > 5 ? 'd-none' : null}}">
+                <div class="row g-0">
+                    <div class="col-2">
+                        <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
+                        <div class="d-none d-sm-none d-lg-block">
+                        {{comment.user.fullName}}
                         </div>
                     </div>
-                </div>  
+                    <div class="card col-10 mb-2" style="max-width: 840px;">
+                        <div class="card-body">
+                            <p class="card-text text-justify">{{ comment.text }}</p> 
+                            <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y H:i:s") }}</small></p>
+                        </div>
+                    </div>
+                </div>
             </div> 
-        {% endfor %}
+            {% endfor %}
+            <div class="text-center">
+                <button data-class="comments" class="buttonload p-1 mb-5">
+                    <i class="fa fa-spinner fa-spin"></i>Voir plus
+                </button> 
+            </div>
+        {% endif %}
     </div>
-</div>
-#} 
-{% block javascripts %}  
+</div> 
 {% endblock %}
+{% block javascripts %}  
     <script type="text/javascript">
-    $(function () { 
-        $('.buttonloadMedia').on('click', function (e) { 
-            e.preventDefault(); 
-            let $cards = $('.d-none').slice(0, 10);
-            if ($cards.length === 0) { 
-                $('.buttonloadMedia').remove(); 
-            } 
-            $cards.each(function (x) { 
-                $(this).removeClass('d-none') 
-            }) 
+        $(function () { 
+            $('.buttonload').on('click', function (e) { 
+                e.preventDefault();
+                let dataclass = $(this).attr('data-class');
+                let $cards = $( '.' + dataclass + '.d-none').slice(0, 5);
+                if ($cards.length === 0) { 
+                    $(this).remove(); 
+                } 
+                $cards.each(function (x) { 
+                    $(this).removeClass('d-none') 
+                }) 
+            })
         })
-    })
     </script>
 {% endblock %}
