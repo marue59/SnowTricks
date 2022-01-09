@@ -13,7 +13,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class Trick extends Fixture
 {
-
     /**
      * @var UserPasswordHasherInterface
      */
@@ -29,25 +28,24 @@ class Trick extends Fixture
     {
         $faker = Factory::create();
 
-        for($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
+            $user = new User();
+            $user->setFullName($faker->firstName());
+            $user->setPassword($this->encoder->hashPassword($user, 'password'));
+            $user->setEmail("user$i@email.com");
 
-           $user = new User();
-           $user->setFullName($faker->firstName());
-           $user->setPassword($this->encoder->hashPassword($user, 'password'));
-           $user->setEmail("user$i@email.com");
+            if ($i == 0) {
+                $user->addRole('ROLE_ADMIN');
+            }
 
-           if($i == 0){
-               $user->addRole('ROLE_ADMIN');
-           }
-           
-           $manager->persist($user);
+            $manager->persist($user);
         }
         $manager->flush();
 
         $categories = ['Flips', 'Slide', '360'];
 
-    
-        foreach($categories as $cat) {
+
+        foreach ($categories as $cat) {
             $category = new Category();
             $category->setName($cat);
             $manager->persist($category);
@@ -56,8 +54,7 @@ class Trick extends Fixture
 
         $categories = $manager->getRepository(Category::class)->findAll();
 
-        for($i = 0; $i < 50; $i++) {
-
+        for ($i = 0; $i < 50; $i++) {
             $trick = new T();
             $trick->setName($faker->name());
             $trick->setCategory($faker->randomElement($categories));
@@ -70,16 +67,14 @@ class Trick extends Fixture
         $users = $manager->getRepository(User::class)->findAll();
         $trick = $manager->getRepository(T::class)->findAll();
 
-        for($i = 0; $i < 500; $i++) {
-
+        for ($i = 0; $i < 500; $i++) {
             $comment = new Comment();
             $comment->setText($faker->text());
             $comment->setUser($faker->randomElement($users));
             $comment->setTrick($faker->randomElement($trick));
-            
+
             $manager->persist($comment);
         }
         $manager->flush();
-
     }
 }

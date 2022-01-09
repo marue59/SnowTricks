@@ -42,7 +42,6 @@ class Comment
     public function __construct()
     {
         $this->create_at = new \DateTimeImmutable();
-
     }
 
     public function getId(): ?int
@@ -74,7 +73,7 @@ class Comment
         return $this;
     }
 
-    
+
 
     public function getTrick(): ?Trick
     {
@@ -90,7 +89,7 @@ class Comment
 
     /**
      * Get the value of user
-     */ 
+     */
     public function getUser()
     {
         return $this->user;
@@ -100,7 +99,7 @@ class Comment
      * Set the value of user
      *
      * @return  self
-     */ 
+     */
     public function setUser($user)
     {
         $this->user = $user;

@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class CommentController extends AbstractController
 {
-
     /**
      * @Route("/new/{id}", name="comment_new", methods={"GET", "POST"})
      */
@@ -25,7 +24,7 @@ class CommentController extends AbstractController
     {
         $comment = new Comment();
         //action pour rajouter l'url sur le form
-        $form = $this->createForm(CommentType::class, $comment, ['action'=>$this->generateUrl('comment_new',['id'=>$trick->getId()])]);
+        $form = $this->createForm(CommentType::class, $comment, ['action'=>$this->generateUrl('comment_new', ['id'=>$trick->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

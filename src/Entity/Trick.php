@@ -14,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 // contrainte d'unicité
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  * @UniqueEntity("name")
