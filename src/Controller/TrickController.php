@@ -67,9 +67,7 @@ class TrickController extends AbstractController
      */
     public function show(
         Trick $trick,
-        CommentRepository $commentRepository,
-        Request $request,
-        EntityManagerInterface $entityManager
+        Request $request
     ): Response
     {
         return $this->render('trick/show.html.twig', [
