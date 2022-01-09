@@ -14,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 // contrainte d'unicité
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  * @UniqueEntity("name")
@@ -53,7 +52,7 @@ class Trick
      */
     private $picture;
 
-   /**
+    /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist","remove"})
      */
     private $video;

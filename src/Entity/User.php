@@ -78,8 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    public function addRole($role) {
-        if(!isset($this->roles[$role])) {
+    public function addRole($role)
+    {
+        if (!isset($this->roles[$role])) {
             $this->roles[] = $role;
         }
         return $this;

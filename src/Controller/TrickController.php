@@ -22,7 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-
 /**
  * @Route("/trick")
  */
@@ -32,68 +31,65 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_USER", message="Vous devez être connecté pour avoir accés")
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, 
-    EntityManagerInterface $entityManager, 
-    SluggerInterface $slugger): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger
+    ): Response {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick); 
-        
+        $form = $this->createForm(TrickType::class, $trick);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->handleVideos($form->get('video'));
             $this->handlePictures($form->get('picture'), $slugger);
-            
+
             //ajouter slug.
             $trick->setSlug($slugger->slug($trick->getName()));
 
-        
+
             $entityManager->persist($trick);
             $entityManager->flush();
-            
+
             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
-        
         }
-       
+
         return $this->renderForm('trick/new.html.twig', [
             'trick' => $trick,
             'form' => $form
-        ]);   
-    
+        ]);
     }
 
-    /** 
+    /**
      * @Route("/{slug}", name="trick_show", methods={"GET", "POST"})
      * @param CommentRepository $commentRepository
      */
-    public function show(Trick $trick, 
-    CommentRepository $commentRepository,
-    Request $request, 
-    EntityManagerInterface $entityManager): Response
-    {   
-       
+    public function show(
+        Trick $trick,
+        Request $request
+    ): Response
+    {
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
         ]);
     }
 
-    /**     
+    /**
      * @IsGranted("ROLE_USER")
      * @Route("/{slug}/edit", name="trick_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, 
-    Trick $trick,
-     EntityManagerInterface $entityManager,
-     SluggerInterface $slugger): Response
+    public function edit(
+        Request $request,
+        Trick $trick,
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger
+    ): Response
     {
-        
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->handlePictures($form->get('picture'), $slugger);
             //utilisation de la methode video
             $this->handleVideos($form->get('video'));
@@ -108,20 +104,20 @@ class TrickController extends AbstractController
         ]);
     }
     //methode pour prendre l'id de la video aprés le / et le stocker en bdd
-    public function handleVideos($videos) 
+    public function handleVideos($videos)
     {
         foreach ($videos as $key => $video) {
             $model = $video->getData();
             $link = $video->get('url')->getData();
             $newLink = \substr($link, \strrpos($link, "/") + 1);
             $model->setUrl($newLink);
-         }
+        }
     }
 
     public function handlePictures($pictures, $slugger)
     {
-         // $picture = PictureType
-         foreach ($pictures as $picture ) {
+        // $picture = PictureType
+        foreach ($pictures as $picture) {
             // $model = Picture
             $model = $picture->getData();
             // $picturFile = UploadFile // upload fait automatiquement grace au FileType
@@ -133,20 +129,17 @@ class TrickController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
 
-                try{
+                try {
                     $pictureFile->move(
                         $this->getParameter('kernel.project_dir') . '/public/images/picture_upload/',
                         $newFilename
                     );
                     $model->setPath($newFilename);
-
                 } catch (FileExeption $e) {
-            
                     $this->addFlash('danger', "Nous avons rencontrés un probleme");
-                }  
+                }
             }
         }
-
     }
 
 

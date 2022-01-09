@@ -29,6 +29,9 @@ Vous pouvez lancer le serveur via la commande suivante :
 
 - symfony serve
 
+Codacy Badge :
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5481d17708714048b474ed64f7cd21ad)](https://www.codacy.com/gh/marue59/snowTricks/dashboard?utm_source=github.com&utm_medium=referral&utm_content=marue59/snowTricks&utm_campaign=Badge_Grade)
+
 Description du projet :
 Jimmy Sweat est un entrepreneur ambitieux passionné de snowboard. Son objectif est la création d'un site collaboratif pour faire connaitre ce sport auprès du grand public et aider à l'apprentissage des figures (tricks).
 

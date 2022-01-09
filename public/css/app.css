@@ -1,6 +1,6 @@
 body {
   margin: 0 auto;
-  font-family: "Ubuntu", sans-serif !important;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .bg_img {
@@ -21,4 +21,8 @@ body {
 .arrow-up {
   position: relative;
   font-size: 3em;
+}
+.pictures {
+  list-style: none;
+  padding-left: 0rem;
 }

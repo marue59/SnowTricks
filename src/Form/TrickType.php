@@ -15,13 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-
-
 class TrickType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {  
+    {
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom'
@@ -38,14 +35,20 @@ class TrickType extends AbstractType
                 'label' => 'Catégorie',
             ])
 
-            ->add('picture', CollectionType::class, [
+            ->add(
+                'picture',
+                CollectionType::class,
+                [
                 'entry_type' => PictureType::class,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
                 ]
             )
-            ->add('video', CollectionType::class, [
+            ->add(
+                'video',
+                CollectionType::class,
+                [
                 'entry_type' => VideoType::class,
                 'by_reference' => false,
                 'allow_add' => true,

@@ -29,7 +29,7 @@
                 <ul class="pictures">
                     {% for picture in form.picture %}
                         <li class="picture{{ picture.vars.id }}">
-                            <img src="{{ asset('images/picture_upload/' ~ picture.vars.value.path) }}" alt="" class="m-1" width="300px" height="150px">
+                            <img src="{{ asset('images/picture_upload/' ~ picture.vars.value.path) }}" alt="" class="m-1" width="200px" height="100px">
                             {{ form_row(picture.name, { 'attr':{'class': 'form-control mt-1'}}) }}
                             {{ form_row(picture.path, { 'attr':{'class': 'form-control mt-1'}}) }}
                             <button type="button" class="remove-tag btn btn-secondary mt-2">Supprimer</button>
@@ -53,7 +53,7 @@
                 <button class="btn btn-secondary" type="submit">Enregister</button>
             {{ form_end(form) }}
             {% if trick.id is not empty %}
-                <button class="btn btn-secondary" type="submit"><a href="{{ path('trick_delete', {'id': trick.id}) }}">Supprimer</button>
+                <button class="btn btn-secondary mb-5" type="submit"><a href="{{ path('trick_delete', {'id': trick.id}) }}">Supprimer</button>
             {% endif %}
         </div>    
     </div>    
