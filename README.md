@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/63bd63316fcc40118ae16856193cab3f)](https://app.codacy.com/gh/marue59/snowTricks?utm_source=github.com&utm_medium=referral&utm_content=marue59/snowTricks&utm_campaign=Badge_Grade_Settings)
+
 Développez de A à Z le site communautaire SnowTricks
 
 Clonage du projet
