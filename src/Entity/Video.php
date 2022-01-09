@@ -28,10 +28,10 @@ class Video
      * @ORM\Column(type="string", length=255)
      */
     private $url;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="video") 
-     * @ORM\JoinColumn(nullable=false) 
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="video")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $trick;
 
@@ -66,7 +66,7 @@ class Video
 
     /**
      * Get the value of trick
-     */ 
+     */
     public function getTrick()
     {
         return $this->trick;
@@ -76,7 +76,7 @@ class Video
      * Set the value of trick
      *
      * @return  self
-     */ 
+     */
     public function setTrick($trick)
     {
         $this->trick = $trick;

@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-
 /**
  * @Route("/trick")
  */
@@ -37,61 +36,58 @@ class TrickController extends AbstractController
     /**
      * @Route("/new", name="trick_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, 
-    EntityManagerInterface $entityManager, 
-    SluggerInterface $slugger): Response
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger
+    ): Response
     {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick); 
-        
+        $form = $this->createForm(TrickType::class, $trick);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->handleVideos($form->get('video'));
 
-             // $picture = PictureType
-            foreach ($form->get('picture') as $picture ) {
+            // $picture = PictureType
+            foreach ($form->get('picture') as $picture) {
                 // $model = Picture
                 $model = $picture->getData();
                 // $picturFile = UploadFile // upload fait automatiquement grace au FileType
                 $pictureFile = $picture->get('path')->getData();
-    
+
                 if ($pictureFile) {
                     $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = $slugger->slug($originalFilename);
                     $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
-    
-                    try{
+
+                    try {
                         $pictureFile->move(
                             $this->getParameter('kernel.project_dir') . '/public/images/picture_upload/',
                             $newFilename
                         );
                         $model->setPath($newFilename);
-    
                     } catch (FileExeption $e) {
-                
                         $this->addFlash('danger', "Nous avons rencontrés un probleme");
-                    }  
+                    }
                 }
             }
             //ajouter slug.
             $trick->setSlug($slugger->slug($trick->getName()));
 
-        
+
             $entityManager->persist($trick);
             $entityManager->flush();
-            
+
             return $this->redirectToRoute('trick_index', [], Response::HTTP_SEE_OTHER);
-        
         }
-       
+
         return $this->renderForm('trick/new.html.twig', [
             'trick' => $trick,
             'form' => $form
-        ]);   
-    
+        ]);
     }
 
     /**
@@ -110,7 +106,6 @@ class TrickController extends AbstractController
      */
     public function edit(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
     {
-        
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
@@ -128,14 +123,14 @@ class TrickController extends AbstractController
         ]);
     }
     //methode pour prendre l'id de la video aprés le / et le stocker en bdd
-    public function handleVideos($videos) 
+    public function handleVideos($videos)
     {
         foreach ($videos as $key => $video) {
             $model = $video->getData();
             $link = $video->get('url')->getData();
             $newLink = \substr($link, \strrpos($link, "/") + 1);
             $model->setUrl($newLink);
-         }
+        }
     }
 
 
