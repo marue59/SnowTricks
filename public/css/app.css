@@ -22,3 +22,7 @@ body {
   position: relative;
   font-size: 3em;
 }
+.pictures {
+  list-style: none;
+  padding-left: 0rem;
+}
