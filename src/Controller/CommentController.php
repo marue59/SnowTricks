@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +21,7 @@ class CommentController extends AbstractController
      */
     public function new(Request $request, 
     EntityManagerInterface $entityManager, 
-    Trick $trick,
-    CommentRepository $commentRepository): Response
+    Trick $trick): Response
     {
         $comment = new Comment();
         //action pour rajouter l'url sur le form
@@ -39,22 +37,6 @@ class CommentController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('trick_show', ['slug'=>$trick->getSlug()], Response::HTTP_SEE_OTHER);
-        }
-
-        //pagination
-        $page = $request->get('page', 1);
-
-        $limit = 10;
-        $comments = $commentRepository->createQueryBuilder('t')
-            ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit)
-            ->getQuery()->getResult();
-
-        if ($request->isXmlHttpRequest()) {
-            return $this->render(
-                'comment/_list.html.twig',
-                ['comments' => $comments]
-            );
         }
 
         return $this->renderForm('comment/_form.html.twig', [
