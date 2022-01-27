@@ -66,31 +66,9 @@
         </div>
         
     </div>
-    <div class="list-comment">
+    <div class="">
         {% if trick.comments is not empty%}
-            {% for comment in trick.comments %} 
-            <div class="comments m-1 {{ loop.index > 5 ? 'd-none' : null}}">
-                <div class="row g-0">
-                    <div class="col-2">
-                        <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
-                        <div class="d-none d-sm-none d-lg-block">
-                        {{comment.user.fullName}}
-                        </div>
-                    </div>
-                    <div class="card col-10 mb-2" style="max-width: 840px;">
-                        <div class="card-body">
-                            <p class="card-text text-justify">{{ comment.text }}</p> 
-                            <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y H:i:s") }}</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            {% endfor %}
-            <div class="text-center">
-                <button data-page=1 data-class="comments" class="buttonload p-1 mb-5">
-                    <i class="fa fa-spinner fa-spin"></i>Voir plus
-                </button> 
-            </div>
+            {% include 'comment/_list.html.twig' %}
         {% endif %}
     </div>
 </div> 
@@ -107,14 +85,6 @@
                 } 
                 $cards.each(function (x) { 
                     $(this).removeClass('d-none') 
-                })
-                let $that = $(this)
-                let page = $(this).attr('data-page');
-                $.ajax({
-                    url: window.location.href + '?page=' + page
-                }).then(function(response) {
-                    $that.attr('data-page', parseInt(page) + 1);
-                    $('.list-comment').append(response)
                 })
             })
         })

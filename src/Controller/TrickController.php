@@ -86,12 +86,14 @@ class TrickController extends AbstractController
   
         if ($request->isXmlHttpRequest()) {
             return $this->render(
-                'comment/_list.html.twig',
-                ['comments' => $commentRepository->findAll()]
+                'trick/show.html.twig',
+                [ 'trick' => $trick,
+                'comments' => $commentRepository->findAll()]
             );
         }
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
+            'comments' => $commentRepository->findAll()
         ]);
     }
 
