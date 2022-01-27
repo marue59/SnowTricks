@@ -67,11 +67,33 @@ class TrickController extends AbstractController
      */
     public function show(
         Trick $trick,
-        Request $request
+        Request $request,
+        CommentRepository $commentRepository
     ): Response
     {
+
+        //pagination
+        $page = $request->get('page', 1);
+
+        $limit = 10;
+      
+        $comments = $commentRepository->createQueryBuilder('c')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->where("c.trick = :trick")
+            ->setParameter("trick", $trick->getId())
+            ->setMaxResults($limit)
+            ->getQuery()->getResult();
+  
+        if ($request->isXmlHttpRequest()) {
+            return $this->render(
+                'trick/show.html.twig',
+                [ 'trick' => $trick,
+                'comments' => $comments]
+            );
+        }
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
+            'comments' => $commentRepository->findAll()
         ]);
     }
 
@@ -141,7 +163,6 @@ class TrickController extends AbstractController
             }
         }
     }
-
 
     /**
      * @IsGranted("ROLE_USER")

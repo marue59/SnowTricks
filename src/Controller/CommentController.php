@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,9 @@ class CommentController extends AbstractController
     /**
      * @Route("/new/{id}", name="comment_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, Trick $trick): Response
+    public function new(Request $request, 
+    EntityManagerInterface $entityManager, 
+    Trick $trick): Response
     {
         $comment = new Comment();
         //action pour rajouter l'url sur le form
