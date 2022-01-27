@@ -1,0 +1,18 @@
+{% for comment in trick.comments %} 
+    <div class="comments m-1 {{ loop.index > 5 ? 'd-none' : null}}">
+        <div class="row g-0">
+            <div class="col-2">
+                <img src="https://eu.ui-avatars.com/api/?name={{comment.user.fullName}}" class="img-fluid rounded-start" alt="...">
+                <div class="d-none d-sm-none d-lg-block">
+                {{comment.user.fullName}}
+                </div>
+            </div>
+            <div class="card col-10 mb-2" style="max-width: 840px;">
+                <div class="card-body">
+                    <p class="card-text text-justify">{{ comment.text }}</p> 
+                    <p class="card-text text-end"><small class="text-muted">Posté le : {{ comment.createAt| date("d/m/Y H:i:s") }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div> 
+{% endfor %}

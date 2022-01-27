@@ -52,9 +52,6 @@
                {{ form_errors (form) }}
                 <button class="btn btn-secondary" type="submit">Enregister</button>
             {{ form_end(form) }}
-            {% if trick.id is not empty %}
-                <button class="btn btn-secondary mb-5" type="submit"><a href="{{ path('trick_delete', {'id': trick.id}) }}">Supprimer</button>
-            {% endif %}
         </div>    
     </div>    
 </div>
