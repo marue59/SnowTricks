@@ -71,7 +71,6 @@ class TrickController extends AbstractController
         CommentRepository $commentRepository
     ): Response
     {
-
         //pagination
         $page = $request->get('page', 1);
 
@@ -86,9 +85,8 @@ class TrickController extends AbstractController
   
         if ($request->isXmlHttpRequest()) {
             return $this->render(
-                'trick/show.html.twig',
-                [ 'trick' => $trick,
-                'comments' => $comments]
+                'comment/_list.html.twig',
+                ['comments' => $comments]
             );
         }
         return $this->render('trick/show.html.twig', [
