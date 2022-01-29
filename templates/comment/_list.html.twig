@@ -17,34 +17,4 @@
         </div>
     </div> 
     {% endfor %}
-    <div class="text-center">
-        <button data-page=1 data-class="comments" class="buttonload p-1 mb-5">
-            <i class="fa fa-spinner fa-spin"></i>Voir plus
-        </button> 
-    </div>
 </div> 
-{% block javascripts %}  
-<script type="text/javascript">
-    $(function () { 
-        $('.buttonload').on('click', function (e) { 
-            e.preventDefault();
-            let dataclass = $(this).attr('data-class');
-            let $cards = $( '.' + dataclass + '.d-none').slice(0, 5);
-            if ($cards.length === 0) { 
-                $(this).remove(); 
-            } 
-            $cards.each(function (x) { 
-                $(this).removeClass('d-none') 
-            })
-            let $that = $(this)
-            let page = $(this).attr('data-page');
-            $.ajax({
-                url: window.location.href + '?page=' + page
-            }).then(function(response) {
-                $that.attr('data-page', parseInt(page) + 1);
-                $('.list-comment').append(response)
-            })
-        })
-    })
-</script>
-{% endblock %}
