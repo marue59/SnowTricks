@@ -66,11 +66,9 @@
         </div>
     </div>
     <div>
-        {% if trick.comments is not empty%}
         <div class="list-comment">
             {% include 'comment/_list.html.twig' %}
         </div>
-        {% endif %}
         <div class="text-center">
             <button data-page=1 data-class="comments" class="buttonload p-1 mb-5">
                 <i class="fa fa-spinner fa-spin"></i>Voir plus
