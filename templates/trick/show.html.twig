@@ -64,11 +64,12 @@
                 <p class="card-text text-center m-3">Pour laisser un commentaire vous devez vous connecter</p> 
             {% endif %}
         </div>
-        
     </div>
-    <div class="">
+    <div>
         {% if trick.comments is not empty%}
+        <div class="list-comment">
             {% include 'comment/_list.html.twig' %}
+        </div>
         {% endif %}
         <div class="text-center">
             <button data-page=1 data-class="comments" class="buttonload p-1 mb-5">
